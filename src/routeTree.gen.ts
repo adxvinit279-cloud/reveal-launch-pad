@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
@@ -21,6 +22,11 @@ import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
+  id: '/terms-and-conditions',
+  path: '/terms-and-conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubmitRoute = SubmitRouteImport.update({
   id: '/submit',
   path: '/submit',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/products'
     | '/submit'
+    | '/terms-and-conditions'
     | '/blog/$slug'
     | '/category/$slug'
     | '/product/$slug'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/products'
     | '/submit'
+    | '/terms-and-conditions'
     | '/blog/$slug'
     | '/category/$slug'
     | '/product/$slug'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/products'
     | '/submit'
+    | '/terms-and-conditions'
     | '/blog/$slug'
     | '/category/$slug'
     | '/product/$slug'
@@ -168,12 +180,20 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProductsRoute: typeof ProductsRoute
   SubmitRoute: typeof SubmitRoute
+  TermsAndConditionsRoute: typeof TermsAndConditionsRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms-and-conditions': {
+      id: '/terms-and-conditions'
+      path: '/terms-and-conditions'
+      fullPath: '/terms-and-conditions'
+      preLoaderRoute: typeof TermsAndConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submit': {
       id: '/submit'
       path: '/submit'
@@ -273,6 +293,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProductsRoute: ProductsRoute,
   SubmitRoute: SubmitRoute,
+  TermsAndConditionsRoute: TermsAndConditionsRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
