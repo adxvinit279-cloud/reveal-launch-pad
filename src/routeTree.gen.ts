@@ -9,38 +9,380 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WriteForUsRouteImport } from './routes/write-for-us'
+import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
+import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as EditorialPolicyRouteImport } from './routes/editorial-policy'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdvertiseRouteImport } from './routes/advertise'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const WriteForUsRoute = WriteForUsRouteImport.update({
+  id: '/write-for-us',
+  path: '/write-for-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
+  id: '/terms-and-conditions',
+  path: '/terms-and-conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubmitRoute = SubmitRouteImport.update({
+  id: '/submit',
+  path: '/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorialPolicyRoute = EditorialPolicyRouteImport.update({
+  id: '/editorial-policy',
+  path: '/editorial-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertiseRoute = AdvertiseRouteImport.update({
+  id: '/advertise',
+  path: '/advertise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductSlugRoute = ProductSlugRouteImport.update({
+  id: '/product/$slug',
+  path: '/product/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategorySlugRoute = CategorySlugRouteImport.update({
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/products': typeof ProductsRoute
+  '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/submit': typeof SubmitRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/write-for-us': typeof WriteForUsRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/products': typeof ProductsRoute
+  '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/submit': typeof SubmitRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/write-for-us': typeof WriteForUsRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/products': typeof ProductsRoute
+  '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/submit': typeof SubmitRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/write-for-us': typeof WriteForUsRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/auth'
+    | '/blog'
+    | '/categories'
+    | '/contact'
+    | '/disclaimer'
+    | '/editorial-policy'
+    | '/privacy-policy'
+    | '/products'
+    | '/sitemap'
+    | '/sitemap.xml'
+    | '/submit'
+    | '/terms-and-conditions'
+    | '/write-for-us'
+    | '/blog/$slug'
+    | '/category/$slug'
+    | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/auth'
+    | '/blog'
+    | '/categories'
+    | '/contact'
+    | '/disclaimer'
+    | '/editorial-policy'
+    | '/privacy-policy'
+    | '/products'
+    | '/sitemap'
+    | '/sitemap.xml'
+    | '/submit'
+    | '/terms-and-conditions'
+    | '/write-for-us'
+    | '/blog/$slug'
+    | '/category/$slug'
+    | '/product/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/auth'
+    | '/blog'
+    | '/categories'
+    | '/contact'
+    | '/disclaimer'
+    | '/editorial-policy'
+    | '/privacy-policy'
+    | '/products'
+    | '/sitemap'
+    | '/sitemap.xml'
+    | '/submit'
+    | '/terms-and-conditions'
+    | '/write-for-us'
+    | '/blog/$slug'
+    | '/category/$slug'
+    | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdvertiseRoute: typeof AdvertiseRoute
+  AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRouteWithChildren
+  CategoriesRoute: typeof CategoriesRoute
+  ContactRoute: typeof ContactRoute
+  DisclaimerRoute: typeof DisclaimerRoute
+  EditorialPolicyRoute: typeof EditorialPolicyRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ProductsRoute: typeof ProductsRoute
+  SitemapRoute: typeof SitemapRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SubmitRoute: typeof SubmitRoute
+  TermsAndConditionsRoute: typeof TermsAndConditionsRoute
+  WriteForUsRoute: typeof WriteForUsRoute
+  CategorySlugRoute: typeof CategorySlugRoute
+  ProductSlugRoute: typeof ProductSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/write-for-us': {
+      id: '/write-for-us'
+      path: '/write-for-us'
+      fullPath: '/write-for-us'
+      preLoaderRoute: typeof WriteForUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-and-conditions': {
+      id: '/terms-and-conditions'
+      path: '/terms-and-conditions'
+      fullPath: '/terms-and-conditions'
+      preLoaderRoute: typeof TermsAndConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/submit': {
+      id: '/submit'
+      path: '/submit'
+      fullPath: '/submit'
+      preLoaderRoute: typeof SubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editorial-policy': {
+      id: '/editorial-policy'
+      path: '/editorial-policy'
+      fullPath: '/editorial-policy'
+      preLoaderRoute: typeof EditorialPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertise': {
+      id: '/advertise'
+      path: '/advertise'
+      fullPath: '/advertise'
+      preLoaderRoute: typeof AdvertiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +390,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/product/$slug': {
+      id: '/product/$slug'
+      path: '/product/$slug'
+      fullPath: '/product/$slug'
+      preLoaderRoute: typeof ProductSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/category/$slug': {
+      id: '/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/category/$slug'
+      preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdvertiseRoute: AdvertiseRoute,
+  AuthRoute: AuthRoute,
+  BlogRoute: BlogRouteWithChildren,
+  CategoriesRoute: CategoriesRoute,
+  ContactRoute: ContactRoute,
+  DisclaimerRoute: DisclaimerRoute,
+  EditorialPolicyRoute: EditorialPolicyRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ProductsRoute: ProductsRoute,
+  SitemapRoute: SitemapRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SubmitRoute: SubmitRoute,
+  TermsAndConditionsRoute: TermsAndConditionsRoute,
+  WriteForUsRoute: WriteForUsRoute,
+  CategorySlugRoute: CategorySlugRoute,
+  ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
