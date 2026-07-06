@@ -45,9 +45,9 @@ export function SiteHeader() {
             <Search className="h-4 w-4" />
           </Link>
           {user ? (
-            <Link to="/_authenticated/dashboard" className="hidden md:block">
+            <a href="/admin" className="hidden md:block">
               <Button variant="ghost" size="sm">Dashboard</Button>
-            </Link>
+            </a>
           ) : (
             <Link to="/auth" className="hidden md:block">
               <Button variant="ghost" size="sm">Sign in</Button>
