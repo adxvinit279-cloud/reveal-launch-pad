@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
@@ -27,6 +28,11 @@ const SubmitRoute = SubmitRouteImport.update({
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesRoute = CategoriesRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/categories'
+    | '/contact'
     | '/products'
     | '/submit'
     | '/blog/$slug'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/categories'
+    | '/contact'
     | '/products'
     | '/submit'
     | '/blog/$slug'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/categories'
+    | '/contact'
     | '/products'
     | '/submit'
     | '/blog/$slug'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
+  ContactRoute: typeof ContactRoute
   ProductsRoute: typeof ProductsRoute
   SubmitRoute: typeof SubmitRoute
   CategorySlugRoute: typeof CategorySlugRoute
@@ -160,6 +173,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categories': {
@@ -229,6 +249,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BlogRoute: BlogRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
+  ContactRoute: ContactRoute,
   ProductsRoute: ProductsRoute,
   SubmitRoute: SubmitRoute,
   CategorySlugRoute: CategorySlugRoute,
