@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -28,6 +29,11 @@ const SubmitRoute = SubmitRouteImport.update({
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/submit': typeof SubmitRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/categories'
     | '/contact'
+    | '/privacy-policy'
     | '/products'
     | '/submit'
     | '/blog/$slug'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/categories'
     | '/contact'
+    | '/privacy-policy'
     | '/products'
     | '/submit'
     | '/blog/$slug'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/categories'
     | '/contact'
+    | '/privacy-policy'
     | '/products'
     | '/submit'
     | '/blog/$slug'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProductsRoute: typeof ProductsRoute
   SubmitRoute: typeof SubmitRoute
   CategorySlugRoute: typeof CategorySlugRoute
@@ -173,6 +186,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -250,6 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProductsRoute: ProductsRoute,
   SubmitRoute: SubmitRoute,
   CategorySlugRoute: CategorySlugRoute,
