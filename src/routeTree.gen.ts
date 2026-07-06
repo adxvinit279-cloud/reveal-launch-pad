@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WriteForUsRouteImport } from './routes/write-for-us'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as EditorialPolicyRouteImport } from './routes/editorial-policy'
@@ -39,6 +40,11 @@ const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
 const SubmitRoute = SubmitRouteImport.update({
   id: '/submit',
   path: '/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/editorial-policy': typeof EditorialPolicyRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
+  '/sitemap': typeof SitemapRoute
   '/submit': typeof SubmitRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/editorial-policy': typeof EditorialPolicyRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
+  '/sitemap': typeof SitemapRoute
   '/submit': typeof SubmitRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/editorial-policy': typeof EditorialPolicyRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
+  '/sitemap': typeof SitemapRoute
   '/submit': typeof SubmitRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/editorial-policy'
     | '/privacy-policy'
     | '/products'
+    | '/sitemap'
     | '/submit'
     | '/terms-and-conditions'
     | '/write-for-us'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/editorial-policy'
     | '/privacy-policy'
     | '/products'
+    | '/sitemap'
     | '/submit'
     | '/terms-and-conditions'
     | '/write-for-us'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/editorial-policy'
     | '/privacy-policy'
     | '/products'
+    | '/sitemap'
     | '/submit'
     | '/terms-and-conditions'
     | '/write-for-us'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   EditorialPolicyRoute: typeof EditorialPolicyRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProductsRoute: typeof ProductsRoute
+  SitemapRoute: typeof SitemapRoute
   SubmitRoute: typeof SubmitRoute
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
   WriteForUsRoute: typeof WriteForUsRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/submit'
       fullPath: '/submit'
       preLoaderRoute: typeof SubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -375,6 +395,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditorialPolicyRoute: EditorialPolicyRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProductsRoute: ProductsRoute,
+  SitemapRoute: SitemapRoute,
   SubmitRoute: SubmitRoute,
   TermsAndConditionsRoute: TermsAndConditionsRoute,
   WriteForUsRoute: WriteForUsRoute,
