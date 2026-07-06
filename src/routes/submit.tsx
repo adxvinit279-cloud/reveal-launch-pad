@@ -45,11 +45,15 @@ function SubmitPage() {
   });
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    name: string; slug: string; website_url: string; category_id: string;
+    tagline: string; description: string; pricing: "free" | "freemium" | "paid" | "free_trial";
+    founder_name: string; launch_date: string;
+  }>({
     name: "", slug: "", website_url: "", category_id: "", tagline: "", description: "",
-    pricing: "freemium" as const, founder_name: "", launch_date: new Date().toISOString().slice(0, 10),
+    pricing: "freemium", founder_name: "", launch_date: new Date().toISOString().slice(0, 10),
   });
-  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v } as typeof f));
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
