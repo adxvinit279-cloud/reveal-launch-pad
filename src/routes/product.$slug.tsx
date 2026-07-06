@@ -158,7 +158,7 @@ function ProductDetail() {
           {product.key_features.length > 0 && (
             <Prose title="Key features">
               <ul className="list-disc space-y-1.5 pl-5">
-                {product.key_features.map((f) => <li key={f}>{f}</li>)}
+                {product.key_features.map((f: string) => <li key={f}>{f}</li>)}
               </ul>
             </Prose>
           )}
@@ -172,13 +172,13 @@ function ProductDetail() {
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h3 className="font-display font-semibold text-primary">Pros</h3>
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
-                  {product.pros.map((p) => <li key={p}>{p}</li>)}
+                  {product.pros.map((p: string) => <li key={p}>{p}</li>)}
                 </ul>
               </div>
               <div className="rounded-2xl border border-border bg-card p-5">
                 <h3 className="font-display font-semibold text-destructive">Cons</h3>
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
-                  {product.cons.map((p) => <li key={p}>{p}</li>)}
+                  {product.cons.map((p: string) => <li key={p}>{p}</li>)}
                 </ul>
               </div>
             </div>
