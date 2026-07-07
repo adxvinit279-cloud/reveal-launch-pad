@@ -11,7 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WriteForUsRouteImport } from './routes/write-for-us'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
-import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as SubmitProductRouteImport } from './routes/submit-product'
+import { Route as SubmissionRouteImport } from './routes/submission'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as ProductsRouteImport } from './routes/products'
@@ -39,9 +40,14 @@ const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
   path: '/terms-and-conditions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubmitRoute = SubmitRouteImport.update({
-  id: '/submit',
-  path: '/submit',
+const SubmitProductRoute = SubmitProductRouteImport.update({
+  id: '/submit-product',
+  path: '/submit-product',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubmissionRoute = SubmissionRouteImport.update({
+  id: '/submission',
+  path: '/submission',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -139,7 +145,8 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/submit': typeof SubmitRoute
+  '/submission': typeof SubmissionRoute
+  '/submit-product': typeof SubmitProductRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -160,7 +167,8 @@ export interface FileRoutesByTo {
   '/products': typeof ProductsRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/submit': typeof SubmitRoute
+  '/submission': typeof SubmissionRoute
+  '/submit-product': typeof SubmitProductRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -182,7 +190,8 @@ export interface FileRoutesById {
   '/products': typeof ProductsRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/submit': typeof SubmitRoute
+  '/submission': typeof SubmissionRoute
+  '/submit-product': typeof SubmitProductRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -205,7 +214,8 @@ export interface FileRouteTypes {
     | '/products'
     | '/sitemap'
     | '/sitemap.xml'
-    | '/submit'
+    | '/submission'
+    | '/submit-product'
     | '/terms-and-conditions'
     | '/write-for-us'
     | '/blog/$slug'
@@ -226,7 +236,8 @@ export interface FileRouteTypes {
     | '/products'
     | '/sitemap'
     | '/sitemap.xml'
-    | '/submit'
+    | '/submission'
+    | '/submit-product'
     | '/terms-and-conditions'
     | '/write-for-us'
     | '/blog/$slug'
@@ -247,7 +258,8 @@ export interface FileRouteTypes {
     | '/products'
     | '/sitemap'
     | '/sitemap.xml'
-    | '/submit'
+    | '/submission'
+    | '/submit-product'
     | '/terms-and-conditions'
     | '/write-for-us'
     | '/blog/$slug'
@@ -269,7 +281,8 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRoute
   SitemapRoute: typeof SitemapRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SubmitRoute: typeof SubmitRoute
+  SubmissionRoute: typeof SubmissionRoute
+  SubmitProductRoute: typeof SubmitProductRoute
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
   WriteForUsRoute: typeof WriteForUsRoute
   CategorySlugRoute: typeof CategorySlugRoute
@@ -292,11 +305,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsAndConditionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/submit': {
-      id: '/submit'
-      path: '/submit'
-      fullPath: '/submit'
-      preLoaderRoute: typeof SubmitRouteImport
+    '/submit-product': {
+      id: '/submit-product'
+      path: '/submit-product'
+      fullPath: '/submit-product'
+      preLoaderRoute: typeof SubmitProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/submission': {
+      id: '/submission'
+      path: '/submission'
+      fullPath: '/submission'
+      preLoaderRoute: typeof SubmissionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -438,7 +458,8 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRoute,
   SitemapRoute: SitemapRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SubmitRoute: SubmitRoute,
+  SubmissionRoute: SubmissionRoute,
+  SubmitProductRoute: SubmitProductRoute,
   TermsAndConditionsRoute: TermsAndConditionsRoute,
   WriteForUsRoute: WriteForUsRoute,
   CategorySlugRoute: CategorySlugRoute,
