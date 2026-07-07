@@ -14,16 +14,23 @@ export type ProductCardData = {
   is_trending?: boolean;
   is_editors_pick?: boolean;
   review_count?: number;
+  featured_image?: string | null;
+  logo_url?: string | null;
   category?: { name: string; slug: string } | null;
 };
 
 export function ProductCard({ p }: { p: ProductCardData }) {
   const initials = p.name.slice(0, 2).toUpperCase();
+  const img = p.featured_image || p.logo_url;
   return (
     <article className="group relative flex gap-4 rounded-2xl border border-border/70 bg-card p-5 transition-all hover:shadow-soft hover:-translate-y-0.5">
-      <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-brand-gradient font-display text-lg font-bold text-primary">
-        {initials}
-      </div>
+      {img ? (
+        <img src={img} alt={p.name} loading="lazy" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+      ) : (
+        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-brand-gradient font-display text-lg font-bold text-primary">
+          {initials}
+        </div>
+      )}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <Link
