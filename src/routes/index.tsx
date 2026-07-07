@@ -62,7 +62,7 @@ function Index() {
                   Explore Products <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="/submit">
+              <Link to="/submit-product">
                 <Button size="lg" variant="outline" className="border-primary/30">
                   Submit Product
                 </Button>
@@ -145,6 +145,20 @@ function Index() {
           <div className="md:col-span-1">
             <NewsletterForm />
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-col items-start gap-4 rounded-3xl border border-border bg-card p-8 sm:flex-row sm:items-center sm:justify-between md:p-12">
+          <div>
+            <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">Have a product to share?</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              Submit your product for free and get discovered by ProductReveal readers. No account required.
+            </p>
+          </div>
+          <Link to="/submit-product">
+            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">Submit Product</Button>
+          </Link>
         </div>
       </section>
 

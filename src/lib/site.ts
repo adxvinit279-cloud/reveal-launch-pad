@@ -7,10 +7,11 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
+  { to: "/", label: "Home" },
   { to: "/products", label: "Products" },
   { to: "/categories", label: "Categories" },
   { to: "/blog", label: "Blog" },
-  { to: "/submit", label: "Submit Product" },
+  { to: "/submit-product", label: "Submit Product" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
@@ -21,6 +22,7 @@ export const FOOTER_LINKS = {
     { to: "/products", label: "Products" },
     { to: "/categories", label: "Categories" },
     { to: "/blog", label: "Blog" },
+    { to: "/submit-product", label: "Submit Product" },
   ],
   Company: [
     { to: "/about", label: "About" },

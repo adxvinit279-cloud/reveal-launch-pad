@@ -22,15 +22,22 @@ export const Route = createFileRoute("/product/$slug")({
     const p = loaderData?.product;
     const title = p?.seo_title || (p ? `${p.name} — ${p.tagline}` : "Product — ProductReveal");
     const desc = p?.seo_description || p?.tagline || SITE.description;
+    const meta: Array<Record<string, string>> = [
+      { title },
+      { name: "description", content: desc },
+      { property: "og:title", content: title },
+      { property: "og:description", content: desc },
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: `/product/${params.slug}` },
+    ];
+    if (p?.featured_image) {
+      meta.push(
+        { property: "og:image", content: p.featured_image },
+        { name: "twitter:card", content: "summary_large_image" },
+      );
+    }
     return {
-      meta: [
-        { title },
-        { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `/product/${params.slug}` },
-      ],
+      meta,
       links: [{ rel: "canonical", href: `/product/${params.slug}` }],
       scripts: p
         ? [
@@ -43,6 +50,19 @@ export const Route = createFileRoute("/product/$slug")({
                 description: p.description,
                 brand: p.founder_name ?? SITE.name,
                 url: p.website_url,
+                image: p.featured_image ?? undefined,
+              }),
+            },
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+                  { "@type": "ListItem", position: 2, name: "Products", item: "/products" },
+                  { "@type": "ListItem", position: 3, name: p.name, item: `/product/${params.slug}` },
+                ],
               }),
             },
           ]
@@ -116,9 +136,15 @@ function ProductDetail() {
       <section className="bg-hero-gradient border-b border-border/60">
         <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-black text-primary shadow-soft">
-              {initials}
-            </div>
+            {product.featured_image ? (
+              <img src={product.featured_image} alt={product.name} className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft" />
+            ) : product.logo_url ? (
+              <img src={product.logo_url} alt={product.name} className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft" />
+            ) : (
+              <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-black text-primary shadow-soft">
+                {initials}
+              </div>
+            )}
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 {product.is_featured && <Badge className="bg-primary text-primary-foreground">Featured</Badge>}
@@ -184,6 +210,16 @@ function ProductDetail() {
             </div>
           )}
 
+          {product.gallery_images && product.gallery_images.length > 0 && (
+            <Prose title="Gallery">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {product.gallery_images.map((src: string) => (
+                  <img key={src} src={src} alt={`${product.name} screenshot`} className="rounded-xl border border-border object-cover" loading="lazy" />
+                ))}
+              </div>
+            </Prose>
+          )}
+
           <div>
             <h2 className="font-display text-2xl font-bold">Reviews</h2>
             <p className="mt-1 text-sm text-muted-foreground">Reviews are moderated before appearing publicly.</p>
@@ -209,7 +245,7 @@ function ProductDetail() {
           </div>
 
           <div className="rounded-2xl border border-dashed border-border bg-secondary/50 p-5 text-sm text-muted-foreground">
-            <strong className="text-foreground">Disclaimer:</strong> ProductReveal may use affiliate or referral links where applicable. Product details are provided by the maker and reviewed by our editorial team; verify pricing and features on the official website before purchase.
+            <strong className="text-foreground">Disclaimer:</strong> Product information is submitted by makers and reviewed by ProductReveal before publishing. We try to keep details accurate, but pricing, features, and availability may change. Please verify details on the official product website.
           </div>
         </div>
 

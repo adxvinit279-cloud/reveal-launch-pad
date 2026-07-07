@@ -23,11 +23,18 @@ export type ProductRow = {
   is_editors_pick: boolean;
   seo_title: string | null;
   seo_description: string | null;
+  featured_image?: string | null;
+  gallery_images?: string[];
+  tags?: string[];
+  demo_video_url?: string | null;
+  twitter_url?: string | null;
+  linkedin_url?: string | null;
+  coupon_code?: string | null;
   categories?: { slug: string; name: string } | null;
 };
 
 export const PRODUCT_SELECT =
-  "id,slug,name,tagline,description,key_features,best_for,pros,cons,category_id,pricing,website_url,logo_url,screenshots,founder_name,launch_date,upvote_count,is_featured,is_trending,is_editors_pick,seo_title,seo_description,categories:category_id(slug,name)";
+  "id,slug,name,tagline,description,key_features,best_for,pros,cons,category_id,pricing,website_url,logo_url,featured_image,gallery_images,screenshots,founder_name,launch_date,upvote_count,is_featured,is_trending,is_editors_pick,seo_title,seo_description,tags,demo_video_url,twitter_url,linkedin_url,coupon_code,categories:category_id(slug,name)";
 
 export async function fetchApprovedProducts(opts?: { limit?: number; categorySlug?: string; sort?: string }) {
   let q = supabase.from("products").select(PRODUCT_SELECT).eq("status", "approved");
