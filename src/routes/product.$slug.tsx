@@ -22,15 +22,22 @@ export const Route = createFileRoute("/product/$slug")({
     const p = loaderData?.product;
     const title = p?.seo_title || (p ? `${p.name} — ${p.tagline}` : "Product — ProductReveal");
     const desc = p?.seo_description || p?.tagline || SITE.description;
+    const meta: Array<Record<string, string>> = [
+      { title },
+      { name: "description", content: desc },
+      { property: "og:title", content: title },
+      { property: "og:description", content: desc },
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: `/product/${params.slug}` },
+    ];
+    if (p?.featured_image) {
+      meta.push(
+        { property: "og:image", content: p.featured_image },
+        { name: "twitter:card", content: "summary_large_image" },
+      );
+    }
     return {
-      meta: [
-        { title },
-        { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `/product/${params.slug}` },
-      ],
+      meta,
       links: [{ rel: "canonical", href: `/product/${params.slug}` }],
       scripts: p
         ? [
@@ -61,13 +68,6 @@ export const Route = createFileRoute("/product/$slug")({
           ]
         : [],
     };
-    if (p?.featured_image) {
-      base.meta.push(
-        { property: "og:image", content: p.featured_image },
-        { name: "twitter:card", content: "summary_large_image" },
-      );
-    }
-    return base;
   },
   component: ProductDetail,
   notFoundComponent: () => (
