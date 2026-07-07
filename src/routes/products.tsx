@@ -97,7 +97,7 @@ function ProductsPage() {
         </div>
         {filtered.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">
-            No products match your filters. <Link to="/submit" className="text-primary underline">Submit yours</Link>.
+            No products match your filters. <Link to="/submit-product" className="text-primary underline">Submit yours</Link>.
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">

@@ -53,7 +53,7 @@ export function SiteHeader() {
               <Button variant="ghost" size="sm">Sign in</Button>
             </Link>
           )}
-          <Link to="/submit" className="hidden md:block">
+          <Link to="/submit-product" className="hidden md:block">
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">Submit Product</Button>
           </Link>
           <button
@@ -78,7 +78,7 @@ export function SiteHeader() {
                 {l.label}
               </Link>
             ))}
-            <Link to="/submit" onClick={() => setOpen(false)}>
+            <Link to="/submit-product" onClick={() => setOpen(false)}>
               <Button className="mt-2 w-full bg-primary text-primary-foreground">Submit Product</Button>
             </Link>
             {!user && (

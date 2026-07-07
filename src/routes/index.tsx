@@ -62,7 +62,7 @@ function Index() {
                   Explore Products <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="/submit">
+              <Link to="/submit-product">
                 <Button size="lg" variant="outline" className="border-primary/30">
                   Submit Product
                 </Button>

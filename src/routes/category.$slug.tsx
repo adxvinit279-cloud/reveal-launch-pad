@@ -79,7 +79,7 @@ function CategoryDetail() {
           <h2 className="mb-4 font-display text-2xl font-bold">All {category.name.toLowerCase()}</h2>
           {products.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-muted-foreground">
-              No products in this category yet. <Link to="/submit" className="text-primary underline">Be the first to submit yours.</Link>
+              No products in this category yet. <Link to="/submit-product" className="text-primary underline">Be the first to submit yours.</Link>
             </p>
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
