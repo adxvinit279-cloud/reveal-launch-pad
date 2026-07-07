@@ -43,11 +43,41 @@ export const Route = createFileRoute("/product/$slug")({
                 description: p.description,
                 brand: p.founder_name ?? SITE.name,
                 url: p.website_url,
+                image: p.featured_image ?? undefined,
+              }),
+            },
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+                  { "@type": "ListItem", position: 2, name: "Products", item: "/products" },
+                  { "@type": "ListItem", position: 3, name: p.name, item: `/product/${params.slug}` },
+                ],
               }),
             },
           ]
         : [],
+      ...(p?.featured_image
+        ? { }
+        : {}),
     };
+  },
+  ...({} as never),
+});
+// Extend head with og:image when featured_image exists
+const _originalHead = Route.options.head;
+Route.options.head = (ctx) => {
+  const base = _originalHead?.(ctx) ?? {};
+  const img = ctx.loaderData?.product?.featured_image;
+  if (img) {
+    base.meta = [...(base.meta ?? []), { property: "og:image", content: img }, { name: "twitter:card", content: "summary_large_image" }];
+  }
+  return base;
+};
+const _noop = () => {
   },
   component: ProductDetail,
   notFoundComponent: () => (
