@@ -148,6 +148,20 @@ function Index() {
         </div>
       </section>
 
+      <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-col items-start gap-4 rounded-3xl border border-border bg-card p-8 sm:flex-row sm:items-center sm:justify-between md:p-12">
+          <div>
+            <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">Have a product to share?</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              Submit your product for free and get discovered by ProductReveal readers. No account required.
+            </p>
+          </div>
+          <Link to="/submit-product">
+            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">Submit Product</Button>
+          </Link>
+        </div>
+      </section>
+
       <Section title="How ProductReveal reviews products" subtitle="Trust is earned. Here's how we keep the site useful.">
         <div className="grid gap-4 md:grid-cols-3">
           {[
