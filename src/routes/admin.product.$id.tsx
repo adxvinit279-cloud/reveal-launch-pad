@@ -59,7 +59,7 @@ function AdminProductEditor() {
       coupon_code: p.coupon_code,
     };
     if (nextStatus) payload.status = nextStatus;
-    const { error } = await supabase.from("products").update(payload).eq("id", p.id);
+    const { error } = await supabase.from("products").update(payload as never).eq("id", p.id);
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success(nextStatus ? `Saved & marked ${STATUS_LABEL[nextStatus]}` : "Saved");
