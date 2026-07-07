@@ -60,24 +60,14 @@ export const Route = createFileRoute("/product/$slug")({
             },
           ]
         : [],
-      ...(p?.featured_image
-        ? { }
-        : {}),
     };
-  },
-  ...({} as never),
-});
-// Extend head with og:image when featured_image exists
-const _originalHead = Route.options.head;
-Route.options.head = (ctx) => {
-  const base = _originalHead?.(ctx) ?? {};
-  const img = ctx.loaderData?.product?.featured_image;
-  if (img) {
-    base.meta = [...(base.meta ?? []), { property: "og:image", content: img }, { name: "twitter:card", content: "summary_large_image" }];
-  }
-  return base;
-};
-const _noop = () => {
+    if (p?.featured_image) {
+      base.meta.push(
+        { property: "og:image", content: p.featured_image },
+        { name: "twitter:card", content: "summary_large_image" },
+      );
+    }
+    return base;
   },
   component: ProductDetail,
   notFoundComponent: () => (
