@@ -136,9 +136,15 @@ function ProductDetail() {
       <section className="bg-hero-gradient border-b border-border/60">
         <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-black text-primary shadow-soft">
-              {initials}
-            </div>
+            {product.featured_image ? (
+              <img src={product.featured_image} alt={product.name} className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft" />
+            ) : product.logo_url ? (
+              <img src={product.logo_url} alt={product.name} className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft" />
+            ) : (
+              <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-black text-primary shadow-soft">
+                {initials}
+              </div>
+            )}
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 {product.is_featured && <Badge className="bg-primary text-primary-foreground">Featured</Badge>}
@@ -204,6 +210,16 @@ function ProductDetail() {
             </div>
           )}
 
+          {product.gallery_images && product.gallery_images.length > 0 && (
+            <Prose title="Gallery">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {product.gallery_images.map((src: string) => (
+                  <img key={src} src={src} alt={`${product.name} screenshot`} className="rounded-xl border border-border object-cover" loading="lazy" />
+                ))}
+              </div>
+            </Prose>
+          )}
+
           <div>
             <h2 className="font-display text-2xl font-bold">Reviews</h2>
             <p className="mt-1 text-sm text-muted-foreground">Reviews are moderated before appearing publicly.</p>
@@ -229,7 +245,7 @@ function ProductDetail() {
           </div>
 
           <div className="rounded-2xl border border-dashed border-border bg-secondary/50 p-5 text-sm text-muted-foreground">
-            <strong className="text-foreground">Disclaimer:</strong> ProductReveal may use affiliate or referral links where applicable. Product details are provided by the maker and reviewed by our editorial team; verify pricing and features on the official website before purchase.
+            <strong className="text-foreground">Disclaimer:</strong> Product information is submitted by makers and reviewed by ProductReveal before publishing. We try to keep details accurate, but pricing, features, and availability may change. Please verify details on the official product website.
           </div>
         </div>
 
