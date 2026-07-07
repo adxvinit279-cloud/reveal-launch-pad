@@ -174,22 +174,30 @@ export type Database = {
       }
       products: {
         Row: {
+          admin_notes: string | null
           best_for: string | null
           category_id: string | null
           cons: string[]
+          contact_email: string | null
+          coupon_code: string | null
           created_at: string
+          demo_video_url: string | null
           description: string
+          featured_image: string | null
           founder_name: string | null
+          gallery_images: string[]
           id: string
           is_editors_pick: boolean
           is_featured: boolean
           is_trending: boolean
           key_features: string[]
           launch_date: string
+          linkedin_url: string | null
           logo_url: string | null
           name: string
           pricing: Database["public"]["Enums"]["pricing_type"]
           pros: string[]
+          published_at: string | null
           screenshots: string[]
           seo_description: string | null
           seo_title: string | null
@@ -197,27 +205,37 @@ export type Database = {
           status: Database["public"]["Enums"]["product_status"]
           submitted_by: string | null
           tagline: string
+          tags: string[]
+          twitter_url: string | null
           updated_at: string
           upvote_count: number
           website_url: string
         }
         Insert: {
+          admin_notes?: string | null
           best_for?: string | null
           category_id?: string | null
           cons?: string[]
+          contact_email?: string | null
+          coupon_code?: string | null
           created_at?: string
+          demo_video_url?: string | null
           description: string
+          featured_image?: string | null
           founder_name?: string | null
+          gallery_images?: string[]
           id?: string
           is_editors_pick?: boolean
           is_featured?: boolean
           is_trending?: boolean
           key_features?: string[]
           launch_date?: string
+          linkedin_url?: string | null
           logo_url?: string | null
           name: string
           pricing?: Database["public"]["Enums"]["pricing_type"]
           pros?: string[]
+          published_at?: string | null
           screenshots?: string[]
           seo_description?: string | null
           seo_title?: string | null
@@ -225,27 +243,37 @@ export type Database = {
           status?: Database["public"]["Enums"]["product_status"]
           submitted_by?: string | null
           tagline: string
+          tags?: string[]
+          twitter_url?: string | null
           updated_at?: string
           upvote_count?: number
           website_url: string
         }
         Update: {
+          admin_notes?: string | null
           best_for?: string | null
           category_id?: string | null
           cons?: string[]
+          contact_email?: string | null
+          coupon_code?: string | null
           created_at?: string
+          demo_video_url?: string | null
           description?: string
+          featured_image?: string | null
           founder_name?: string | null
+          gallery_images?: string[]
           id?: string
           is_editors_pick?: boolean
           is_featured?: boolean
           is_trending?: boolean
           key_features?: string[]
           launch_date?: string
+          linkedin_url?: string | null
           logo_url?: string | null
           name?: string
           pricing?: Database["public"]["Enums"]["pricing_type"]
           pros?: string[]
+          published_at?: string | null
           screenshots?: string[]
           seo_description?: string | null
           seo_title?: string | null
@@ -253,6 +281,8 @@ export type Database = {
           status?: Database["public"]["Enums"]["product_status"]
           submitted_by?: string | null
           tagline?: string
+          tags?: string[]
+          twitter_url?: string | null
           updated_at?: string
           upvote_count?: number
           website_url?: string
@@ -363,7 +393,7 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user"
       pricing_type: "free" | "freemium" | "paid" | "free_trial"
-      product_status: "pending" | "approved" | "rejected"
+      product_status: "pending" | "approved" | "rejected" | "removed"
       review_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
@@ -494,7 +524,7 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user"],
       pricing_type: ["free", "freemium", "paid", "free_trial"],
-      product_status: ["pending", "approved", "rejected"],
+      product_status: ["pending", "approved", "rejected", "removed"],
       review_status: ["pending", "approved", "rejected"],
     },
   },
