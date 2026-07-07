@@ -18,7 +18,7 @@ export const Route = createFileRoute("/admin/product/$id")({
 
 type P = Record<string, unknown> & {
   id: string; name: string; slug: string; tagline: string; description: string;
-  website_url: string; category_id: string | null; pricing: string;
+  website_url: string; category_id: string | null; pricing: "free" | "freemium" | "paid" | "free_trial";
   featured_image: string | null; logo_url: string | null; gallery_images: string[];
   key_features: string[]; pros: string[]; cons: string[]; tags: string[];
   founder_name: string | null; contact_email: string | null; launch_date: string;
@@ -48,7 +48,7 @@ function AdminProductEditor() {
   async function save(nextStatus?: ProductStatus) {
     if (!p) return;
     setLoading(true);
-    const payload: Partial<P> = {
+    const payload: Record<string, unknown> = {
       name: p.name, slug: p.slug, tagline: p.tagline, description: p.description,
       website_url: p.website_url, category_id: p.category_id, pricing: p.pricing,
       featured_image: p.featured_image, logo_url: p.logo_url, gallery_images: p.gallery_images,
@@ -68,7 +68,8 @@ function AdminProductEditor() {
 
   async function del() {
     if (!confirm("Delete this submission permanently?")) return;
-    const { error } = await supabase.from("products").delete().eq("id", p.id);
+    if (!p) return;
+    const { error } = await supabase.from("products").delete().eq("id", p!.id);
     if (error) return toast.error(error.message);
     nav({ to: "/admin/dashboard" });
   }
@@ -109,7 +110,7 @@ function AdminProductEditor() {
             </Select>
           </F>
           <F label="Pricing type">
-            <Select value={p.pricing} onValueChange={(v) => upd("pricing", v)}>
+          <Select value={p.pricing} onValueChange={(v) => upd("pricing", v as P["pricing"])}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 {["free", "freemium", "paid", "free_trial"].map((v) => <SelectItem key={v} value={v}>{v}</SelectItem>)}
