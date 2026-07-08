@@ -61,6 +61,7 @@ function AdminLayout() {
             <Link to="/admin/dashboard" className="font-display text-lg font-bold">ProductReveal Admin</Link>
             <nav className="hidden gap-4 text-sm text-muted-foreground sm:flex">
               <Link to="/admin/dashboard" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>Submissions</Link>
+              <Link to="/admin/blogs" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>Blog</Link>
               <Link to="/" className="hover:text-foreground">View site</Link>
             </nav>
           </div>

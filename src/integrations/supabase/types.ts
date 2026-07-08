@@ -20,6 +20,7 @@ export type Database = {
           author_name: string
           content: string
           cover_image_url: string | null
+          created_at: string
           excerpt: string
           id: string
           published: boolean
@@ -36,6 +37,7 @@ export type Database = {
           author_name?: string
           content: string
           cover_image_url?: string | null
+          created_at?: string
           excerpt: string
           id?: string
           published?: boolean
@@ -52,6 +54,7 @@ export type Database = {
           author_name?: string
           content?: string
           cover_image_url?: string | null
+          created_at?: string
           excerpt?: string
           id?: string
           published?: boolean

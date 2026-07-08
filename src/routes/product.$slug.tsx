@@ -136,13 +136,14 @@ function ProductDetail() {
       <section className="bg-hero-gradient border-b border-border/60">
         <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            {product.featured_image ? (
-              <img src={product.featured_image} alt={product.name} className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft" />
-            ) : product.logo_url ? (
+            {product.logo_url ? (
               <img src={product.logo_url} alt={product.name} className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft" />
             ) : (
-              <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-black text-primary shadow-soft">
-                {initials}
+              <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-primary shadow-soft" aria-label={`${product.name} icon`}>
+                <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
               </div>
             )}
             <div className="min-w-0 flex-1">
@@ -173,6 +174,11 @@ function ProductDetail() {
               </div>
             </div>
           </div>
+          {product.featured_image && (
+            <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
+              <img src={product.featured_image} alt={`${product.name} — featured`} className="h-auto w-full object-cover" />
+            </div>
+          )}
         </div>
       </section>
 

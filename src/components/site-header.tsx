@@ -1,21 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS, SITE } from "@/lib/site";
-import { supabase } from "@/integrations/supabase/client";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<{ id: string; email?: string | null } | null>(null);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user ? { id: data.user.id, email: data.user.email } : null));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setUser(session?.user ? { id: session.user.id, email: session.user.email } : null);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -44,15 +34,6 @@ export function SiteHeader() {
           >
             <Search className="h-4 w-4" />
           </Link>
-          {user ? (
-            <a href="/admin" className="hidden md:block">
-              <Button variant="ghost" size="sm">Dashboard</Button>
-            </a>
-          ) : (
-            <Link to="/auth" className="hidden md:block">
-              <Button variant="ghost" size="sm">Sign in</Button>
-            </Link>
-          )}
           <Link to="/submit-product" className="hidden md:block">
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">Submit Product</Button>
           </Link>
@@ -81,11 +62,6 @@ export function SiteHeader() {
             <Link to="/submit-product" onClick={() => setOpen(false)}>
               <Button className="mt-2 w-full bg-primary text-primary-foreground">Submit Product</Button>
             </Link>
-            {!user && (
-              <Link to="/auth" onClick={() => setOpen(false)}>
-                <Button variant="outline" className="mt-2 w-full">Sign in</Button>
-              </Link>
-            )}
           </nav>
         </div>
       )}

@@ -33,7 +33,9 @@ import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
 import { Route as AdminProductIdRouteImport } from './routes/admin.product.$id'
+import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
 
 const WriteForUsRoute = WriteForUsRouteImport.update({
   id: '/write-for-us',
@@ -155,9 +157,19 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminBlogsRoute = AdminBlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminProductIdRoute = AdminProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
+  id: '/blog/$id',
+  path: '/blog/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -180,12 +192,14 @@ export interface FileRoutesByFullPath {
   '/submit-product': typeof SubmitProductRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
+  '/admin/blogs': typeof AdminBlogsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/product/$id': typeof AdminProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -206,12 +220,14 @@ export interface FileRoutesByTo {
   '/submit-product': typeof SubmitProductRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
+  '/admin/blogs': typeof AdminBlogsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/product/$id': typeof AdminProductIdRoute
 }
 export interface FileRoutesById {
@@ -234,12 +250,14 @@ export interface FileRoutesById {
   '/submit-product': typeof SubmitProductRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/write-for-us': typeof WriteForUsRoute
+  '/admin/blogs': typeof AdminBlogsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/product/$id': typeof AdminProductIdRoute
 }
 export interface FileRouteTypes {
@@ -263,12 +281,14 @@ export interface FileRouteTypes {
     | '/submit-product'
     | '/terms-and-conditions'
     | '/write-for-us'
+    | '/admin/blogs'
     | '/admin/dashboard'
     | '/admin/login'
     | '/blog/$slug'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/'
+    | '/admin/blog/$id'
     | '/admin/product/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -289,12 +309,14 @@ export interface FileRouteTypes {
     | '/submit-product'
     | '/terms-and-conditions'
     | '/write-for-us'
+    | '/admin/blogs'
     | '/admin/dashboard'
     | '/admin/login'
     | '/blog/$slug'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin'
+    | '/admin/blog/$id'
     | '/admin/product/$id'
   id:
     | '__root__'
@@ -316,12 +338,14 @@ export interface FileRouteTypes {
     | '/submit-product'
     | '/terms-and-conditions'
     | '/write-for-us'
+    | '/admin/blogs'
     | '/admin/dashboard'
     | '/admin/login'
     | '/blog/$slug'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/'
+    | '/admin/blog/$id'
     | '/admin/product/$id'
   fileRoutesById: FileRoutesById
 }
@@ -518,6 +542,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/blogs': {
+      id: '/admin/blogs'
+      path: '/blogs'
+      fullPath: '/admin/blogs'
+      preLoaderRoute: typeof AdminBlogsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/product/$id': {
       id: '/admin/product/$id'
       path: '/product/$id'
@@ -525,20 +556,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/blog/$id': {
+      id: '/admin/blog/$id'
+      path: '/blog/$id'
+      fullPath: '/admin/blog/$id'
+      preLoaderRoute: typeof AdminBlogIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminBlogsRoute: typeof AdminBlogsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogIdRoute: typeof AdminBlogIdRoute
   AdminProductIdRoute: typeof AdminProductIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminBlogsRoute: AdminBlogsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminBlogIdRoute: AdminBlogIdRoute,
   AdminProductIdRoute: AdminProductIdRoute,
 }
 

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Sparkles, ShieldCheck, Search } from "lucide-react";
+import { ArrowRight, Sparkles, ShieldCheck, Search, Rocket, Award, Link2, FileText, Gauge, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product-card";
 import { NewsletterForm } from "@/components/newsletter-form";
@@ -38,6 +38,18 @@ function Index() {
       return data ?? [];
     },
   });
+  const { data: latestPosts = [] } = useQuery({
+    queryKey: ["home", "latest-blogs"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("blog_posts")
+        .select("slug,title,excerpt,cover_image_url,author_name,published_at")
+        .eq("published", true)
+        .order("published_at", { ascending: false })
+        .limit(3);
+      return data ?? [];
+    },
+  });
   const editorsPicks = featured.filter((p) => p.is_editors_pick).slice(0, 3);
   const topToday = [...featured].sort((a, b) => b.upvote_count - a.upvote_count).slice(0, 5);
 
@@ -50,23 +62,39 @@ function Index() {
               <Sparkles className="h-3.5 w-3.5" /> Fresh launches every day
             </span>
             <h1 className="mt-5 font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
-              Discover new products, tools & startups
+              Reveal Your Product to the Right Audience
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-              ProductReveal helps you find the best AI tools, SaaS apps, templates, plugins,
-              and digital products launched by makers around the world.
+              Submit your startup, SaaS, AI tool, template, plugin, or digital product on
+              ProductReveal and get discovered by readers looking for trusted new products.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/products">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Explore Products <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Button>
-              </Link>
               <Link to="/submit-product">
-                <Button size="lg" variant="outline" className="border-primary/30">
-                  Submit Product
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                  Submit Your Product <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Button>
               </Link>
+              <Link to="/products">
+                <Button size="lg" variant="outline" className="border-primary/30">
+                  Explore Products
+                </Button>
+              </Link>
+            </div>
+            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { icon: Rocket, title: "Free Product Submission", body: "List your product for free — no account or credit card required." },
+                { icon: Award, title: "High-Quality Listings", body: "Every listing is written and formatted for a clean, trustworthy look." },
+                { icon: Link2, title: "Trusted Backlink Opportunity", body: "Approved listings include a link to your product website." },
+                { icon: FileText, title: "SEO-Friendly Product Pages", body: "Clean markup, meta tags and structured data on every page." },
+                { icon: Gauge, title: "Built for Discoverability", body: "Fast pages and clear structure help search engines understand your product." },
+                { icon: UserCheck, title: "Admin-Reviewed Listings", body: "A real editor reviews every submission before it goes live." },
+              ].map(({ icon: Icon, title, body }) => (
+                <div key={title} className="rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur">
+                  <Icon className="h-5 w-5 text-primary" />
+                  <h3 className="mt-2 font-display text-sm font-semibold">{title}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">{body}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -131,6 +159,24 @@ function Index() {
           ))}
         </div>
       </Section>
+
+      {latestPosts.length > 0 && (
+        <Section title="From the blog" subtitle="Guides, roundups and buying advice." link={{ to: "/blog", label: "All articles" }}>
+          <div className="grid gap-4 md:grid-cols-3">
+            {latestPosts.map((post) => (
+              <Link key={post.slug} to="/blog/$slug" params={{ slug: post.slug }} className="group rounded-2xl border border-border/70 bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-soft">
+                {post.cover_image_url ? (
+                  <img src={post.cover_image_url} alt="" loading="lazy" className="mb-3 h-36 w-full rounded-xl object-cover" />
+                ) : (
+                  <div className="mb-3 h-36 rounded-xl bg-brand-gradient" />
+                )}
+                <h3 className="font-display text-lg font-semibold group-hover:underline">{post.title}</h3>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>
+              </Link>
+            ))}
+          </div>
+        </Section>
+      )}
 
       <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
         <div className="grid gap-6 rounded-3xl border border-border/70 bg-brand-gradient p-8 md:grid-cols-3 md:p-12">

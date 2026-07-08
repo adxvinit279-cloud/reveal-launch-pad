@@ -21,14 +21,22 @@ export type ProductCardData = {
 
 export function ProductCard({ p }: { p: ProductCardData }) {
   const initials = p.name.slice(0, 2).toUpperCase();
-  const img = p.featured_image || p.logo_url;
+  const img = p.logo_url; // small card icon uses logo only; featured image is reserved for the hero
   return (
     <article className="group relative flex gap-4 rounded-2xl border border-border/70 bg-card p-5 transition-all hover:shadow-soft hover:-translate-y-0.5">
       {img ? (
         <img src={img} alt={p.name} loading="lazy" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
       ) : (
-        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-brand-gradient font-display text-lg font-bold text-primary">
-          {initials}
+        <div
+          className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-brand-gradient font-display text-lg font-black text-primary shadow-soft"
+          aria-label={`${p.name} icon`}
+          title={initials}
+        >
+          {/* Universal default ProductReveal icon */}
+          <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
         </div>
       )}
       <div className="min-w-0 flex-1">
