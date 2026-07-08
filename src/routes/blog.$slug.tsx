@@ -71,6 +71,9 @@ function BlogPost() {
             By {post.author_name} · Published {formatDate(post.published_at)}
             {post.updated_at && post.updated_at !== post.published_at && <> · Updated {formatDate(post.updated_at)}</>}
           </div>
+          {post.cover_image_url && (
+            <img src={post.cover_image_url} alt="" className="mt-6 h-auto w-full rounded-2xl border border-border object-cover shadow-soft" />
+          )}
         </div>
       </section>
 
