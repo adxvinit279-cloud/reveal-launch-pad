@@ -36,7 +36,11 @@ function BlogIndex() {
               params={{ slug: p.slug }}
               className="group rounded-2xl border border-border/70 bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft"
             >
-              <div className="mb-4 h-40 rounded-xl bg-brand-gradient" />
+              {p.cover_image_url ? (
+                <img src={p.cover_image_url} alt="" loading="lazy" className="mb-4 h-40 w-full rounded-xl object-cover" />
+              ) : (
+                <div className="mb-4 h-40 rounded-xl bg-brand-gradient" />
+              )}
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span>{formatDate(p.published_at)}</span>
                 <span>·</span>
