@@ -26,7 +26,7 @@ function AdminBlogs() {
   });
 
   async function togglePublish(id: string, published: boolean) {
-    const patch: Record<string, unknown> = { published: !published };
+    const patch: { published: boolean; published_at?: string } = { published: !published };
     if (!published) patch.published_at = new Date().toISOString();
     const { error } = await supabase.from("blog_posts").update(patch).eq("id", id);
     if (error) return toast.error(error.message);
