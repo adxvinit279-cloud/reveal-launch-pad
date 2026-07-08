@@ -98,7 +98,7 @@ function BlogEditor() {
       seo_title: form.seo_title.trim() || null,
       seo_description: form.seo_description.trim() || null,
       published: willPublish,
-      published_at: willPublish ? new Date().toISOString() : null,
+      ...(willPublish ? { published_at: new Date().toISOString() } : {}),
     };
     const res = isNew
       ? await supabase.from("blog_posts").insert(payload).select("id").maybeSingle()
