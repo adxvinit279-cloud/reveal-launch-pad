@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { PRODUCT_SELECT, type ProductRow } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
@@ -36,7 +37,8 @@ function ProductsPage() {
     queryFn: async () => (await supabase.from("categories").select("slug,name").order("sort_order")).data ?? [],
   });
 
-  const { data: products = [] } = useQuery({
+  const [visible, setVisible] = useState(24);
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ["products", sort, categorySlug],
     queryFn: async () => {
       let query = supabase.from("products").select(PRODUCT_SELECT).eq("status", "approved");
@@ -50,6 +52,7 @@ function ProductsPage() {
       const { data } = await query;
       return (data ?? []) as unknown as ProductRow[];
     },
+    staleTime: 60_000,
   });
 
   const filtered = useMemo(() => {
@@ -95,16 +98,29 @@ function ProductsPage() {
             </button>
           ))}
         </div>
-        {filtered.length === 0 ? (
+        {isLoading ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-32 animate-pulse rounded-2xl border border-border/70 bg-card" />
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">
             No products match your filters. <Link to="/submit-product" className="text-primary underline">Submit yours</Link>.
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
-            {filtered.map((p) => (
-              <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-4 md:grid-cols-2">
+              {filtered.slice(0, visible).map((p) => (
+                <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />
+              ))}
+            </div>
+            {filtered.length > visible && (
+              <div className="mt-8 flex justify-center">
+                <Button variant="outline" onClick={() => setVisible((v) => v + 24)}>Load more</Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </>
