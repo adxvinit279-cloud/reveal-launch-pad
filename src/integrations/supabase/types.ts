@@ -72,32 +72,47 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          faqs: Json
+          featured_image: string | null
           icon: string | null
           id: string
           name: string
+          seo_description: string | null
+          seo_title: string | null
           slug: string
           sort_order: number
           tagline: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
           description: string
+          faqs?: Json
+          featured_image?: string | null
           icon?: string | null
           id?: string
           name: string
+          seo_description?: string | null
+          seo_title?: string | null
           slug: string
           sort_order?: number
           tagline: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string
+          faqs?: Json
+          featured_image?: string | null
           icon?: string | null
           id?: string
           name?: string
+          seo_description?: string | null
+          seo_title?: string | null
           slug?: string
           sort_order?: number
           tagline?: string
+          updated_at?: string
         }
         Relationships: []
       }
