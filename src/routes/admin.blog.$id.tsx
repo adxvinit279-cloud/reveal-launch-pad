@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { RichTextEditor } from "@/components/rich-text-editor";
+import { uploadMedia } from "@/lib/upload";
 
 export const Route = createFileRoute("/admin/blog/$id")({
   component: BlogEditor,
@@ -51,6 +53,7 @@ function BlogEditor() {
   const [form, setForm] = useState<Form>(EMPTY);
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (isNew) return;
@@ -78,6 +81,13 @@ function BlogEditor() {
 
   function set<K extends keyof Form>(k: K, v: Form[K]) {
     setForm((f) => ({ ...f, [k]: v }));
+  }
+
+  async function uploadCover(file: File) {
+    setUploading(true);
+    try { set("cover_image_url", await uploadMedia(file, "blog-cover")); }
+    catch (e) { toast.error((e as Error).message); }
+    finally { setUploading(false); }
   }
 
   async function save(publish?: boolean) {
@@ -133,14 +143,17 @@ function BlogEditor() {
           <Field label="Excerpt" hint="Short summary shown on blog listing and social previews.">
             <Textarea rows={2} value={form.excerpt} onChange={(e) => set("excerpt", e.target.value)} />
           </Field>
-          <Field label="Content (Markdown supported: ## headings, paragraphs)">
-            <Textarea rows={18} value={form.content} onChange={(e) => set("content", e.target.value)} className="font-mono text-sm" />
+          <Field label="Content">
+            <RichTextEditor value={form.content} onChange={(html) => set("content", html)} />
           </Field>
         </div>
         <aside className="space-y-4">
-          <Field label="Featured image URL">
-            <Input value={form.cover_image_url} onChange={(e) => set("cover_image_url", e.target.value)} placeholder="https://…" />
-            {form.cover_image_url && <img src={form.cover_image_url} alt="" className="mt-2 h-32 w-full rounded-lg object-cover" />}
+          <Field label="Featured image" hint="Shown on the blog listing, article page and homepage.">
+            {form.cover_image_url && (
+              <img src={form.cover_image_url} alt="" className="mb-2 h-40 w-full rounded-lg object-cover" />
+            )}
+            <Input type="file" accept="image/*" disabled={uploading} onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadCover(f); }} />
+            <Input className="mt-2" value={form.cover_image_url} onChange={(e) => set("cover_image_url", e.target.value)} placeholder="Or paste an image URL…" />
           </Field>
           <Field label="Tags / category" hint="Comma-separated.">
             <Input value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="guides, ai-tools" />
