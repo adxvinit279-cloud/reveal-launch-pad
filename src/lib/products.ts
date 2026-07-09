@@ -36,8 +36,18 @@ export type ProductRow = {
 export const PRODUCT_SELECT =
   "id,slug,name,tagline,description,key_features,best_for,pros,cons,category_id,pricing,website_url,logo_url,featured_image,gallery_images,screenshots,founder_name,launch_date,upvote_count,is_featured,is_trending,is_editors_pick,seo_title,seo_description,tags,demo_video_url,twitter_url,linkedin_url,coupon_code,categories:category_id(slug,name)";
 
-export async function fetchApprovedProducts(opts?: { limit?: number; categorySlug?: string; sort?: string }) {
+export async function fetchApprovedProducts(opts?: {
+  limit?: number;
+  categorySlug?: string;
+  sort?: string;
+  featured?: boolean;
+  editorsPick?: boolean;
+  trending?: boolean;
+}) {
   let q = supabase.from("products").select(PRODUCT_SELECT).eq("status", "approved");
+  if (opts?.featured) q = q.eq("is_featured", true);
+  if (opts?.editorsPick) q = q.eq("is_editors_pick", true);
+  if (opts?.trending) q = q.eq("is_trending", true);
   if (opts?.categorySlug) {
     const { data: cat } = await supabase.from("categories").select("id").eq("slug", opts.categorySlug).maybeSingle();
     if (cat) q = q.eq("category_id", cat.id);

@@ -52,7 +52,8 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function BlogPost() {
   const { post } = Route.useLoaderData();
-  const headings = [...post.content.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1]);
+  const isHtml = /<\/?[a-z][^>]*>/i.test(post.content);
+  const html = isHtml ? post.content : renderMarkdownString(post.content);
 
   const { data: related = [] } = useQuery({
     queryKey: ["blog-related", post.id],
@@ -77,21 +78,12 @@ function BlogPost() {
         </div>
       </section>
 
-      <article className="mx-auto grid max-w-4xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-4">
-        <aside className="hidden lg:block">
-          <div className="sticky top-24">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">On this page</h2>
-            <ul className="mt-3 space-y-2 text-sm">
-              {headings.map((h) => (
-                <li key={h}><a href={`#${slugify(h)}`} className="text-muted-foreground hover:text-foreground">{h}</a></li>
-              ))}
-            </ul>
-          </div>
-        </aside>
-        <div className="lg:col-span-3">
-          <div className="prose max-w-none text-foreground/90 [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_p]:mt-4 [&_p]:leading-relaxed">
-            {renderMarkdown(post.content)}
-          </div>
+      <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+        <div>
+          <div
+            className="prose max-w-none text-foreground/90 [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-6 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-semibold [&_h4]:mt-5 [&_h4]:font-display [&_h4]:font-semibold [&_p]:mt-4 [&_p]:leading-relaxed [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:my-4 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-primary [&_a]:underline [&_img]:my-6 [&_img]:rounded-xl [&_table]:my-6 [&_table]:w-full [&_th]:border [&_th]:border-border [&_th]:bg-secondary [&_th]:p-2 [&_td]:border [&_td]:border-border [&_td]:p-2"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
           <div className="mt-12 rounded-2xl border border-border bg-card p-5">
             <h3 className="font-display font-semibold">About the author</h3>
             <p className="mt-2 text-sm text-muted-foreground">{post.author_bio ?? "The ProductReveal editorial team writes original guides and reviews for makers."}</p>
@@ -115,15 +107,11 @@ function BlogPost() {
   );
 }
 
-function slugify(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-function renderMarkdown(md: string) {
-  const blocks = md.split(/\n\n+/);
-  return blocks.map((b, i) => {
+function renderMarkdownString(md: string): string {
+  const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return md.split(/\n\n+/).map((b) => {
     const h2 = b.match(/^##\s+(.+)/);
-    if (h2) return <h2 key={i} id={slugify(h2[1])}>{h2[1]}</h2>;
-    return <p key={i}>{b}</p>;
-  });
+    if (h2) return `<h2>${esc(h2[1])}</h2>`;
+    return `<p>${esc(b).replace(/\n/g, "<br />")}</p>`;
+  }).join("\n");
 }

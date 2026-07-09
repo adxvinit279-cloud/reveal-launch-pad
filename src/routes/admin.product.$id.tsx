@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
-import { uploadProductMedia } from "@/lib/upload";
+import { uploadMedia } from "@/lib/upload";
 import { STATUS_LABEL, type ProductStatus } from "@/lib/admin";
 import { toast } from "sonner";
 
@@ -25,6 +26,7 @@ type P = Record<string, unknown> & {
   seo_title: string | null; seo_description: string | null; admin_notes: string | null;
   demo_video_url: string | null; twitter_url: string | null; linkedin_url: string | null;
   coupon_code: string | null; status: ProductStatus;
+  is_featured: boolean; is_editors_pick: boolean; is_trending: boolean; upvote_count: number;
 };
 
 function AdminProductEditor() {
@@ -57,6 +59,8 @@ function AdminProductEditor() {
       seo_title: p.seo_title, seo_description: p.seo_description, admin_notes: p.admin_notes,
       demo_video_url: p.demo_video_url, twitter_url: p.twitter_url, linkedin_url: p.linkedin_url,
       coupon_code: p.coupon_code,
+      is_featured: p.is_featured, is_editors_pick: p.is_editors_pick, is_trending: p.is_trending,
+      upvote_count: Number.isFinite(p.upvote_count) ? p.upvote_count : 0,
     };
     if (nextStatus) payload.status = nextStatus;
     const { error } = await supabase.from("products").update(payload as never).eq("id", p.id);
@@ -74,9 +78,9 @@ function AdminProductEditor() {
     nav({ to: "/admin/dashboard" });
   }
 
-  async function replaceFeatured(file: File) {
-    const url = await uploadProductMedia(file, "featured");
-    upd("featured_image", url);
+  async function replaceFile(file: File, field: "featured_image" | "logo_url", prefix: string) {
+    try { upd(field, await uploadMedia(file, prefix)); }
+    catch (e) { toast.error((e as Error).message); }
   }
 
   return (
@@ -124,11 +128,29 @@ function AdminProductEditor() {
       </Card>
 
       <Card title="Media">
-        <F label="Featured image">
-          {p.featured_image && <img src={p.featured_image} alt="" className="mb-2 h-32 w-32 rounded-lg object-cover" />}
-          <Input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) replaceFeatured(f); }} />
-          <Input className="mt-2" value={p.featured_image ?? ""} onChange={(e) => upd("featured_image", e.target.value)} placeholder="Image URL" />
-        </F>
+        <Grid>
+          <F label="Featured image (hero)">
+            {p.featured_image && <img src={p.featured_image} alt="" className="mb-2 h-32 w-full rounded-lg object-cover" />}
+            <Input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) replaceFile(f, "featured_image", "featured"); }} />
+            <Input className="mt-2" value={p.featured_image ?? ""} onChange={(e) => upd("featured_image", e.target.value)} placeholder="Image URL" />
+          </F>
+          <F label="Product logo">
+            {p.logo_url && <img src={p.logo_url} alt="" className="mb-2 h-20 w-20 rounded-lg object-cover" />}
+            <Input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) replaceFile(f, "logo_url", "logo"); }} />
+            <Input className="mt-2" value={p.logo_url ?? ""} onChange={(e) => upd("logo_url", e.target.value)} placeholder="Logo URL" />
+          </F>
+        </Grid>
+      </Card>
+
+      <Card title="Placement">
+        <Grid>
+          <ToggleRow label="Featured Product" hint="Show in the Featured section on the homepage." checked={p.is_featured} onChange={(v) => upd("is_featured", v)} />
+          <ToggleRow label="Editor's Pick" hint="Highlighted in the Editor's Picks section." checked={p.is_editors_pick} onChange={(v) => upd("is_editors_pick", v)} />
+          <ToggleRow label="Trending Product" hint="Ranked in the Trending section." checked={p.is_trending} onChange={(v) => upd("is_trending", v)} />
+          <F label="Upvote count">
+            <Input type="number" min={0} value={p.upvote_count} onChange={(e) => upd("upvote_count", parseInt(e.target.value || "0", 10))} />
+          </F>
+        </Grid>
       </Card>
 
       <Card title="Full description">
@@ -187,6 +209,17 @@ function F({ label, children }: { label: string; children: React.ReactNode }) {
     <div className="space-y-1.5">
       <Label className="text-sm font-medium">{label}</Label>
       {children}
+    </div>
+  );
+}
+function ToggleRow({ label, hint, checked, onChange }: { label: string; hint?: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-background p-3">
+      <div>
+        <div className="text-sm font-medium">{label}</div>
+        {hint && <div className="text-xs text-muted-foreground">{hint}</div>}
+      </div>
+      <Switch checked={checked} onCheckedChange={onChange} />
     </div>
   );
 }

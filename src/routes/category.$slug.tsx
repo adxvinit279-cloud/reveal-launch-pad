@@ -7,14 +7,15 @@ import { PageHero } from "@/components/page-hero";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: async ({ params }) => {
-    const { data } = await supabase.from("categories").select("id,slug,name,tagline,description").eq("slug", params.slug).maybeSingle();
+    const { data } = await supabase.from("categories").select("id,slug,name,tagline,description,featured_image,seo_title,seo_description,faqs").eq("slug", params.slug).maybeSingle();
     if (!data) throw notFound();
     return { category: data };
   },
   head: ({ loaderData, params }) => {
     const c = loaderData?.category;
-    const title = c ? `${c.name} — Best ${c.name.toLowerCase()} on ProductReveal` : "Category";
-    const desc = c?.description ?? "Browse this category on ProductReveal.";
+    const title = c?.seo_title || (c ? `${c.name} — Best ${c.name.toLowerCase()} on ProductReveal` : "Category");
+    const desc = c?.seo_description || c?.description || "Browse this category on ProductReveal.";
+    const img = c?.featured_image;
     return {
       meta: [
         { title },
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/category/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc.slice(0, 158) },
         { property: "og:url", content: `/category/${params.slug}` },
+        ...(img ? [{ property: "og:image" as const, content: img }] : []),
       ],
       links: [{ rel: "canonical", href: `/category/${params.slug}` }],
     };
@@ -38,16 +40,17 @@ export const Route = createFileRoute("/category/$slug")({
 
 function CategoryDetail() {
   const { category } = Route.useLoaderData();
+  const adminFaqs = Array.isArray(category.faqs) ? (category.faqs as { q: string; a: string }[]) : [];
   const { data: products = [] } = useQuery({
     queryKey: ["cat-products", category.id],
     queryFn: async () =>
       ((await supabase.from("products").select(PRODUCT_SELECT).eq("status", "approved").eq("category_id", category.id).order("upvote_count", { ascending: false })).data ?? []) as unknown as ProductRow[],
   });
-  const top = products.slice(0, 3);
+  const top = products.slice(0, 6);
   const recent = [...products].sort((a, b) => new Date(b.launch_date).getTime() - new Date(a.launch_date).getTime()).slice(0, 3);
 
-  const faqs = [
-    { q: `What are ${category.name.toLowerCase()}?`, a: category.description },
+  const faqs = adminFaqs.length ? adminFaqs : [
+    { q: `What are ${category.name.toLowerCase()}?`, a: category.description ?? "" },
     { q: `How does ProductReveal choose ${category.name.toLowerCase()} to list?`, a: "Every submission goes through editorial review. We check the product website is live, that pricing information is honest, and that descriptions accurately reflect the product." },
     { q: `Can I submit my ${category.name.toLowerCase().replace(/s$/, "")}?`, a: "Absolutely. Head to the Submit Product page and share the details. Our editors publish approved listings within a few business days." },
   ];
@@ -55,13 +58,18 @@ function CategoryDetail() {
   return (
     <>
       <PageHero eyebrow="Category" title={category.name} description={category.tagline}>
-        <p className="max-w-3xl text-base text-foreground/80">{category.description}</p>
+        {category.description && <p className="max-w-3xl text-base text-foreground/80">{category.description}</p>}
       </PageHero>
+      {category.featured_image && (
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <img src={category.featured_image} alt={category.name} loading="lazy" className="mt-6 h-auto max-h-80 w-full rounded-2xl border border-border object-cover shadow-soft" />
+        </div>
+      )}
 
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         {top.length > 0 && (
           <section className="mb-12">
-            <h2 className="mb-4 font-display text-2xl font-bold">Top-rated {category.name.toLowerCase()}</h2>
+            <h2 className="mb-4 font-display text-2xl font-bold">Top {category.name.toLowerCase()}</h2>
             <div className="grid gap-4 md:grid-cols-3">
               {top.map((p) => <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />)}
             </div>
