@@ -25,11 +25,19 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { data: featured = [] } = useQuery({
     queryKey: ["home", "featured"],
-    queryFn: () => fetchApprovedProducts({ sort: "trending", limit: 6 }),
+    queryFn: () => fetchApprovedProducts({ featured: true, sort: "trending", limit: 4 }),
+  });
+  const { data: editorsPicks = [] } = useQuery({
+    queryKey: ["home", "editors"],
+    queryFn: () => fetchApprovedProducts({ editorsPick: true, sort: "trending", limit: 3 }),
+  });
+  const { data: trending = [] } = useQuery({
+    queryKey: ["home", "trending"],
+    queryFn: () => fetchApprovedProducts({ sort: "trending", limit: 5 }),
   });
   const { data: newest = [] } = useQuery({
     queryKey: ["home", "newest"],
-    queryFn: () => fetchApprovedProducts({ sort: "newest", limit: 6 }),
+    queryFn: () => fetchApprovedProducts({ sort: "newest", limit: 4 }),
   });
   const { data: categories = [] } = useQuery({
     queryKey: ["home", "categories"],
@@ -50,8 +58,7 @@ function Index() {
       return data ?? [];
     },
   });
-  const editorsPicks = featured.filter((p) => p.is_editors_pick).slice(0, 3);
-  const topToday = [...featured].sort((a, b) => b.upvote_count - a.upvote_count).slice(0, 5);
+  const topToday = trending.slice(0, 5);
 
   return (
     <>
@@ -108,7 +115,7 @@ function Index() {
         </div>
       </Section>
 
-      <Section title="Today's top products" subtitle="Ranked by community upvotes right now.">
+      <Section title="Trending right now" subtitle="Ranked by community upvotes.">
         <div className="grid gap-3">
           {topToday.map((p, i) => (
             <div key={p.id} className="flex items-center gap-4 rounded-2xl border border-border/70 bg-card p-4">
