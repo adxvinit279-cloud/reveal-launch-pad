@@ -97,16 +97,31 @@ function ProductDetail() {
   const { data: similar = [] } = useQuery({
     queryKey: ["similar", product.id],
     queryFn: async () => {
-      if (!product.category_id) return [];
-      const { data } = await supabase
-        .from("products")
-        .select(PRODUCT_SELECT)
-        .eq("status", "approved")
-        .eq("category_id", product.category_id)
-        .neq("id", product.id)
-        .order("upvote_count", { ascending: false })
-        .limit(3);
-      return (data ?? []) as unknown as ProductRow[];
+      const target = 6;
+      let results: ProductRow[] = [];
+      if (product.category_id) {
+        const { data } = await supabase
+          .from("products")
+          .select(PRODUCT_SELECT)
+          .eq("status", "approved")
+          .eq("category_id", product.category_id)
+          .neq("id", product.id)
+          .order("upvote_count", { ascending: false })
+          .limit(target);
+        results = (data ?? []) as unknown as ProductRow[];
+      }
+      if (results.length < 3) {
+        const excludeIds = [product.id, ...results.map((r) => r.id)];
+        const { data } = await supabase
+          .from("products")
+          .select(PRODUCT_SELECT)
+          .eq("status", "approved")
+          .not("id", "in", `(${excludeIds.join(",")})`)
+          .order("launch_date", { ascending: false })
+          .limit(target - results.length);
+        results = [...results, ...((data ?? []) as unknown as ProductRow[])];
+      }
+      return results.slice(0, target);
     },
   });
 
