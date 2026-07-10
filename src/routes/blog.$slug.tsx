@@ -61,10 +61,9 @@ export const Route = createFileRoute("/blog/$slug")({
 function BlogPost() {
   const { post } = Route.useLoaderData();
   const isHtml = /<\/?[a-z][^>]*>/i.test(post.content);
-  const html = isHtml ? post.content : renderMarkdownString(post.content);
+  const rawHtml = isHtml ? post.content : renderMarkdownString(post.content);
+  const { html, toc } = useMemo(() => injectHeadingIds(rawHtml), [rawHtml]);
   const category = post.tags?.[0] ?? "Article";
-
-  const toc = useMemo(() => extractToc(html), [html]);
 
   const { data: related = [] } = useQuery({
     queryKey: ["blog-related", post.id],
@@ -180,17 +179,19 @@ function slugifyHeading(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-function extractToc(html: string): Array<{ id: string; text: string; level: 2 | 3 }> {
-  const items: Array<{ id: string; text: string; level: 2 | 3 }> = [];
-  if (typeof document === "undefined") return items;
-  const container = document.createElement("div");
-  container.innerHTML = html;
-  container.querySelectorAll("h2, h3").forEach((el) => {
-    const text = el.textContent?.trim();
-    if (!text) return;
-    const id = el.getAttribute("id") || slugifyHeading(text);
-    el.setAttribute("id", id);
-    items.push({ id, text, level: el.tagName === "H2" ? 2 : 3 });
+function injectHeadingIds(html: string): { html: string; toc: Array<{ id: string; text: string; level: 2 | 3 }> } {
+  const toc: Array<{ id: string; text: string; level: 2 | 3 }> = [];
+  const seen = new Set<string>();
+  const out = html.replace(/<(h2|h3)(\s[^>]*)?>([\s\S]*?)<\/\1>/gi, (_m, tag, attrs = "", inner) => {
+    const text = String(inner).replace(/<[^>]+>/g, "").trim();
+    if (!text) return `<${tag}${attrs}>${inner}</${tag}>`;
+    let id = slugifyHeading(text);
+    let n = 2;
+    while (seen.has(id)) id = `${slugifyHeading(text)}-${n++}`;
+    seen.add(id);
+    toc.push({ id, text, level: tag.toLowerCase() === "h2" ? 2 : 3 });
+    const cleanAttrs = String(attrs).replace(/\sid=("[^"]*"|'[^']*')/i, "");
+    return `<${tag}${cleanAttrs} id="${id}">${inner}</${tag}>`;
   });
-  return items;
+  return { html: out, toc };
 }
