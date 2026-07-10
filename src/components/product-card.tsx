@@ -19,11 +19,11 @@ export type ProductCardData = {
   category?: { name: string; slug: string } | null;
 };
 
-export function ProductCard({ p }: { p: ProductCardData }) {
+export function ProductCard({ p, variant = "default" }: { p: ProductCardData; variant?: "default" | "compact" }) {
   const initials = p.name.slice(0, 2).toUpperCase();
-  const img = p.logo_url; // small card icon uses logo only; featured image is reserved for the hero
+  const img = p.logo_url;
   return (
-    <article className="group relative flex gap-4 rounded-2xl border border-border/70 bg-card p-5 transition-all hover:shadow-soft hover:-translate-y-0.5">
+    <article className="group relative flex flex-col gap-4 rounded-2xl border border-border/70 bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-soft sm:flex-row">
       {img ? (
         <img src={img} alt={p.name} loading="lazy" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
       ) : (
@@ -32,7 +32,6 @@ export function ProductCard({ p }: { p: ProductCardData }) {
           aria-label={`${p.name} icon`}
           title={initials}
         >
-          {/* Universal default ProductReveal icon */}
           <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z" />
             <path d="m9 12 2 2 4-4" />
@@ -63,7 +62,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
               {p.category.name}
             </Link>
           )}
-          <span>{pricingLabel(p.pricing)}</span>
+          <span className="rounded-full border border-border px-2 py-0.5 font-medium">{pricingLabel(p.pricing)}</span>
           <span aria-hidden>•</span>
           <span>Launched {formatDate(p.launch_date)}</span>
           {typeof p.review_count === "number" && (
@@ -72,8 +71,19 @@ export function ProductCard({ p }: { p: ProductCardData }) {
             </span>
           )}
         </div>
+        {variant !== "compact" && (
+          <div className="mt-4">
+            <Link
+              to="/product/$slug"
+              params={{ slug: p.slug }}
+              className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+            >
+              View product →
+            </Link>
+          </div>
+        )}
       </div>
-      <div className="ml-2 flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/60 px-3 py-2 text-center">
+      <div className="flex flex-row items-center justify-center gap-1 self-start rounded-xl border border-border bg-secondary/60 px-3 py-2 text-center sm:ml-2 sm:flex-col sm:gap-0">
         <ChevronUp className="h-4 w-4 text-primary" />
         <span className="text-sm font-bold text-foreground">{p.upvote_count}</span>
       </div>
