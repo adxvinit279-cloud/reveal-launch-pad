@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, SITE } from "@/lib/site";
-import { BlogCard } from "./blog";
+import { BlogCard } from "@/components/blog-card";
 import { ProductCard } from "@/components/product-card";
 import { PRODUCT_SELECT, type ProductRow } from "@/lib/products";
 
@@ -67,8 +67,8 @@ function BlogPost() {
 
   const { data: related = [] } = useQuery({
     queryKey: ["blog-related", post.id],
-    queryFn: async () =>
-      ((await supabase.from("blog_posts").select("slug,title,excerpt,cover_image_url,author_name,published_at,tags").eq("published", true).neq("id", post.id).order("published_at", { ascending: false }).limit(3)).data ?? []) as Array<{
+      queryFn: async () =>
+      ((await supabase.from("blog_posts").select("slug,title,excerpt,cover_image_url,author_name,published_at,tags").eq("published", true).neq("id", post.id).order("published_at", { ascending: false }).limit(4)).data ?? []) as Array<{
         slug: string; title: string; excerpt: string | null; cover_image_url: string | null; author_name: string; published_at: string; tags: string[] | null;
       }>,
   });
@@ -155,9 +155,9 @@ function BlogPost() {
       )}
 
       {related.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
           <h2 className="mb-6 font-display text-2xl font-bold">Related articles</h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((r) => <BlogCard key={r.slug} p={r} />)}
           </div>
         </section>

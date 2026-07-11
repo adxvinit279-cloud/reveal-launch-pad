@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Sparkles, ShieldCheck, Search, Rocket, Award, Link2, FileText, Gauge, UserCheck } from "lucide-react";
+import { ArrowRight, Sparkles, ShieldCheck, Search, Rocket, Award, Link2, FileText, Gauge, UserCheck, ChevronUp, Flame, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product-card";
+import { BlogCard, type BlogListItem } from "@/components/blog-card";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { fetchApprovedProducts } from "@/lib/products";
 import { supabase } from "@/integrations/supabase/client";
@@ -25,11 +25,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { data: featured = [] } = useQuery({
     queryKey: ["home", "featured"],
-    queryFn: () => fetchApprovedProducts({ featured: true, sort: "trending", limit: 4 }),
-  });
-  const { data: editorsPicks = [] } = useQuery({
-    queryKey: ["home", "editors"],
-    queryFn: () => fetchApprovedProducts({ editorsPick: true, sort: "trending", limit: 3 }),
+    queryFn: () => fetchApprovedProducts({ featured: true, sort: "newest", limit: 6 }),
   });
   const { data: trending = [] } = useQuery({
     queryKey: ["home", "trending"],
@@ -37,12 +33,12 @@ function Index() {
   });
   const { data: newest = [] } = useQuery({
     queryKey: ["home", "newest"],
-    queryFn: () => fetchApprovedProducts({ sort: "newest", limit: 4 }),
+    queryFn: () => fetchApprovedProducts({ sort: "newest", limit: 10 }),
   });
   const { data: categories = [] } = useQuery({
     queryKey: ["home", "categories"],
     queryFn: async () => {
-      const { data } = await supabase.from("categories").select("slug,name,tagline").order("sort_order");
+      const { data } = await supabase.from("categories").select("slug,name,tagline,featured_image").order("sort_order");
       return data ?? [];
     },
   });
@@ -51,14 +47,13 @@ function Index() {
     queryFn: async () => {
       const { data } = await supabase
         .from("blog_posts")
-        .select("slug,title,excerpt,cover_image_url,author_name,published_at")
+        .select("slug,title,excerpt,cover_image_url,author_name,published_at,tags")
         .eq("published", true)
         .order("published_at", { ascending: false })
-        .limit(3);
-      return data ?? [];
+        .limit(6);
+      return (data ?? []) as BlogListItem[];
     },
   });
-  const topToday = trending.slice(0, 5);
 
   return (
     <>
@@ -107,79 +102,111 @@ function Index() {
         </div>
       </section>
 
-      <Section title="Featured products" subtitle="Handpicked by the ProductReveal editorial team." link={{ to: "/products", label: "See all" }}>
-        <div className="grid gap-4 md:grid-cols-2">
-          {featured.slice(0, 4).map((p) => (
+      <Section
+        eyebrowIcon={Award}
+        eyebrow="Featured"
+        title="Featured products"
+        subtitle="Handpicked by the ProductReveal editorial team."
+        link={{ to: "/products", label: "See all" }}
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {featured.slice(0, 6).map((p) => (
             <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />
           ))}
         </div>
       </Section>
 
-      <Section title="Trending right now" subtitle="Ranked by community upvotes.">
-        <div className="grid gap-3">
-          {topToday.map((p, i) => (
-            <div key={p.id} className="flex items-center gap-4 rounded-2xl border border-border/70 bg-card p-4">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary font-display text-sm font-bold text-primary">
+      <Section
+        eyebrowIcon={Flame}
+        eyebrow="Trending"
+        title="Trending now"
+        subtitle="Top 5 products ranked by community upvotes."
+      >
+        <div className="grid gap-3 md:grid-cols-2">
+          {trending.slice(0, 5).map((p, i) => (
+            <div key={p.id} className="flex items-center gap-4 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-soft">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-gradient font-display text-sm font-bold text-primary">
                 {i + 1}
               </span>
+              {p.logo_url ? (
+                <img src={p.logo_url} alt={p.name} loading="lazy" className="h-12 w-12 shrink-0 rounded-xl object-cover ring-1 ring-border" />
+              ) : (
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-gradient text-primary">
+                  <TrendingUp className="h-5 w-5" />
+                </div>
+              )}
               <div className="min-w-0 flex-1">
-                <Link to="/product/$slug" params={{ slug: p.slug }} className="font-display text-base font-semibold hover:underline">
+                <Link to="/product/$slug" params={{ slug: p.slug }} className="block truncate font-display text-base font-semibold hover:text-primary">
                   {p.name}
                 </Link>
                 <p className="line-clamp-1 text-sm text-muted-foreground">{p.tagline}</p>
               </div>
-              <span className="rounded-lg bg-brand-gradient px-3 py-1.5 text-sm font-bold text-primary">▲ {p.upvote_count}</span>
+              <div className="flex flex-col items-center rounded-xl border border-border bg-secondary/60 px-2.5 py-1.5">
+                <ChevronUp className="h-4 w-4 text-primary" />
+                <span className="text-xs font-bold leading-none text-foreground">{p.upvote_count}</span>
+              </div>
             </div>
           ))}
         </div>
       </Section>
 
-      <Section title="Trending categories" subtitle="Browse curated collections across the maker economy." link={{ to: "/categories", label: "All categories" }}>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.slice(0, 6).map((c) => (
+      <Section
+        eyebrowIcon={Rocket}
+        eyebrow="Latest"
+        title="Latest launches"
+        subtitle="The 10 newest products approved on ProductReveal."
+        link={{ to: "/products", label: "Browse all" }}
+      >
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+          {newest.slice(0, 10).map((p) => (
+            <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        eyebrowIcon={Sparkles}
+        eyebrow="Categories"
+        title="Trending categories"
+        subtitle="Browse curated collections across the maker economy."
+        link={{ to: "/categories", label: "All categories" }}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.slice(0, 6).map((c: { slug: string; name: string; tagline: string | null; featured_image?: string | null }) => (
             <Link
               key={c.slug}
               to="/category/$slug"
               params={{ slug: c.slug }}
-              className="group rounded-2xl border border-border/70 bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-soft"
+              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-soft"
             >
-              <div className="mb-3 h-10 w-10 rounded-xl bg-brand-gradient" />
-              <h3 className="font-display text-lg font-semibold">{c.name}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{c.tagline}</p>
+              {c.featured_image ? (
+                <img src={c.featured_image} alt="" loading="lazy" className="mb-4 h-12 w-12 rounded-xl object-cover ring-1 ring-border" />
+              ) : (
+                <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-brand-gradient text-primary">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+              )}
+              <h3 className="font-display text-lg font-semibold group-hover:text-primary">{c.name}</h3>
+              {c.tagline && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{c.tagline}</p>}
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:underline">
+                Explore →
+              </span>
             </Link>
           ))}
         </div>
       </Section>
 
-      <Section title="Editor's picks" subtitle="Products our editors think you shouldn't miss.">
-        <div className="grid gap-4 md:grid-cols-3">
-          {editorsPicks.map((p) => (
-            <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Latest launches" subtitle="The newest products approved on ProductReveal." link={{ to: "/products", label: "Browse all" }}>
-        <div className="grid gap-4 md:grid-cols-2">
-          {newest.slice(0, 4).map((p) => (
-            <ProductCard key={p.id} p={{ ...p, category: p.categories ?? null }} />
-          ))}
-        </div>
-      </Section>
-
       {latestPosts.length > 0 && (
-        <Section title="From the blog" subtitle="Guides, roundups and buying advice." link={{ to: "/blog", label: "All articles" }}>
-          <div className="grid gap-4 md:grid-cols-3">
-            {latestPosts.map((post) => (
-              <Link key={post.slug} to="/blog/$slug" params={{ slug: post.slug }} className="group rounded-2xl border border-border/70 bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-soft">
-                {post.cover_image_url ? (
-                  <img src={post.cover_image_url} alt="" loading="lazy" className="mb-3 h-36 w-full rounded-xl object-cover" />
-                ) : (
-                  <div className="mb-3 h-36 rounded-xl bg-brand-gradient" />
-                )}
-                <h3 className="font-display text-lg font-semibold group-hover:underline">{post.title}</h3>
-                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>
-              </Link>
+        <Section
+          eyebrowIcon={FileText}
+          eyebrow="Blog"
+          title="From the blog"
+          subtitle="Guides, roundups and buying advice from the ProductReveal editorial team."
+          link={{ to: "/blog", label: "All articles" }}
+        >
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latestPosts.slice(0, 6).map((post) => (
+              <BlogCard key={post.slug} p={post} />
             ))}
           </div>
         </Section>
@@ -241,16 +268,26 @@ function Section({
   subtitle,
   link,
   children,
+  eyebrow,
+  eyebrowIcon: EyebrowIcon,
 }: {
   title: string;
   subtitle?: string;
   link?: { to: string; label: string };
   children: React.ReactNode;
+  eyebrow?: string;
+  eyebrowIcon?: React.ComponentType<{ className?: string }>;
 }) {
   return (
     <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
       <div className="mb-6 flex items-end justify-between gap-4">
         <div>
+          {eyebrow && (
+            <span className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
+              {EyebrowIcon && <EyebrowIcon className="h-3 w-3" />}
+              {eyebrow}
+            </span>
+          )}
           <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">{title}</h2>
           {subtitle && <p className="mt-1 text-muted-foreground">{subtitle}</p>}
         </div>
