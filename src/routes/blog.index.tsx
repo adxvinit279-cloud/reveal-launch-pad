@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/page-hero";
 import { formatDate } from "@/lib/site";
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   component: BlogIndex,
   head: () => ({
     meta: [
