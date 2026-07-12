@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { FOOTER_LINKS, SITE } from "@/lib/site";
 import { NewsletterForm } from "@/components/newsletter-form";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoUrl from "@/assets/logo.png";
 
 export function SiteFooter() {
   return (
