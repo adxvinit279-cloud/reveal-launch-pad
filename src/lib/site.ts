@@ -1,5 +1,6 @@
 export const SITE = {
   name: "ProductReveal",
+  url: "https://productreveal.online",
   tagline: "Discover the best new digital products before everyone else.",
   description:
     "ProductReveal helps you discover the best new AI tools, SaaS apps, templates, plugins, and digital products launched by makers around the world.",

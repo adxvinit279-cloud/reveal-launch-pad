@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { FOOTER_LINKS, SITE } from "@/lib/site";
 import { NewsletterForm } from "@/components/newsletter-form";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 export function SiteFooter() {
   return (
@@ -8,7 +9,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
         <div className="md:col-span-1">
           <div className="flex items-center gap-2 font-display text-lg font-bold">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-gradient font-black text-primary">P</span>
+            <img src={logoAsset.url} alt={`${SITE.name} logo`} className="h-9 w-9 rounded-full object-cover" />
             {SITE.name}
           </div>
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">
