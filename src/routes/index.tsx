@@ -284,6 +284,27 @@ function Index() {
         </div>
       </section>
 
+      <Section
+        eyebrowIcon={Search}
+        eyebrow="FAQ"
+        title="Frequently asked questions"
+        subtitle="Everything makers and readers ask us most."
+      >
+        <div className="mx-auto grid max-w-3xl gap-3">
+          {FAQS.map((f) => (
+            <details key={f.q} className="group rounded-2xl border border-border/70 bg-card p-5 shadow-sm transition-colors open:border-primary/40">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border text-primary transition-transform group-open:rotate-45">+</span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </Section>
+
+
+
       <Section title="How ProductReveal reviews products" subtitle="Trust is earned. Here's how we keep the site useful.">
         <div className="grid gap-4 md:grid-cols-3">
           {[
