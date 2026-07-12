@@ -1,4 +1,4 @@
-```tsx
+
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -121,4 +121,4 @@ export const Route = createFileRoute("/disclaimer")({
     links: [{ rel: "canonical", href: "/disclaimer" }],
   }),
 });
-```
+
