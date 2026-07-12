@@ -8,7 +8,7 @@ export const Route = createFileRoute("/advertise")({
       {
         name: "description",
         content:
-          "Partner with ProductReveal to promote your AI tool, SaaS product, or digital service through clearly disclosed advertising and sponsorship opportunities.",
+          "Partner with ProductReveal to promote your AI tools, SaaS product, or digital service through clearly disclosed advertising and sponsorship opportunities.",
       },
       { property: "og:title", content: "Advertise on ProductReveal" },
       {
