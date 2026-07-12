@@ -4,11 +4,43 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const BASE_URL = "https://productreveal.online";
 
-const STATIC_PATHS = [
-  "/", "/products", "/categories", "/blog", "/submit-product", "/about", "/contact",
-  "/privacy-policy", "/terms-and-conditions", "/disclaimer",
-  "/editorial-policy", "/advertise", "/write-for-us", "/sitemap",
+type Freq = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+type Entry = { path: string; lastmod?: string | null; changefreq: Freq; priority: string };
+
+const STATIC: Entry[] = [
+  { path: "/",                        changefreq: "daily",   priority: "1.0" },
+  { path: "/products",                changefreq: "daily",   priority: "0.9" },
+  { path: "/categories",              changefreq: "weekly",  priority: "0.8" },
+  { path: "/blog",                    changefreq: "daily",   priority: "0.9" },
+  { path: "/submit-product",          changefreq: "monthly", priority: "0.6" },
+  { path: "/about",                   changefreq: "monthly", priority: "0.5" },
+  { path: "/contact",                 changefreq: "monthly", priority: "0.5" },
+  { path: "/advertise",               changefreq: "monthly", priority: "0.4" },
+  { path: "/write-for-us",            changefreq: "monthly", priority: "0.4" },
+  { path: "/sitemap",                 changefreq: "monthly", priority: "0.3" },
+  { path: "/privacy-policy",          changefreq: "yearly",  priority: "0.3" },
+  { path: "/terms-and-conditions",    changefreq: "yearly",  priority: "0.3" },
+  { path: "/disclaimer",              changefreq: "yearly",  priority: "0.3" },
+  { path: "/editorial-policy",        changefreq: "yearly",  priority: "0.3" },
 ];
+
+function toIsoDate(v: string | null | undefined): string | null {
+  if (!v) return null;
+  const d = new Date(v);
+  return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+}
+
+function renderUrl(e: Entry): string {
+  const lm = e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>\n` : "";
+  return (
+    `  <url>\n` +
+    `    <loc>${BASE_URL}${e.path}</loc>\n` +
+    lm +
+    `    <changefreq>${e.changefreq}</changefreq>\n` +
+    `    <priority>${e.priority}</priority>\n` +
+    `  </url>`
+  );
+}
 
 Deno.serve(async () => {
   try {
@@ -20,24 +52,24 @@ Deno.serve(async () => {
 
     const [{ data: products }, { data: cats }, { data: posts }] = await Promise.all([
       supabase.from("products").select("slug,updated_at").eq("status", "approved"),
-      supabase.from("categories").select("slug"),
+      supabase.from("categories").select("slug,updated_at"),
       supabase.from("blog_posts").select("slug,updated_at").eq("published", true),
     ]);
 
-    const entries = new Map<string, string | null>();
-    for (const p of STATIC_PATHS) entries.set(p, null);
-    for (const p of products ?? []) entries.set(`/product/${p.slug}`, p.updated_at ?? null);
-    for (const c of cats ?? []) entries.set(`/category/${c.slug}`, null);
-    for (const p of posts ?? []) entries.set(`/blog/${p.slug}`, p.updated_at ?? null);
+    const entries: Entry[] = [...STATIC];
+    for (const p of products ?? []) entries.push({ path: `/product/${p.slug}`, lastmod: toIsoDate(p.updated_at), changefreq: "weekly", priority: "0.8" });
+    for (const c of cats ?? [])     entries.push({ path: `/category/${c.slug}`, lastmod: toIsoDate((c as { updated_at?: string }).updated_at), changefreq: "weekly", priority: "0.7" });
+    for (const p of posts ?? [])    entries.push({ path: `/blog/${p.slug}`,   lastmod: toIsoDate(p.updated_at), changefreq: "monthly", priority: "0.7" });
 
-    const urls = [...entries.entries()]
-      .map(([path, lastmod]) => {
-        const lm = lastmod ? `<lastmod>${new Date(lastmod).toISOString().slice(0, 10)}</lastmod>` : "";
-        return `  <url><loc>${BASE_URL}${path}</loc>${lm}</url>`;
-      })
-      .join("\n");
+    // Dedupe by path (keep first occurrence).
+    const seen = new Set<string>();
+    const unique = entries.filter((e) => (seen.has(e.path) ? false : (seen.add(e.path), true)));
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+    const xml =
+      `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      unique.map(renderUrl).join("\n") + "\n" +
+      `</urlset>\n`;
 
     return new Response(xml, {
       headers: {
