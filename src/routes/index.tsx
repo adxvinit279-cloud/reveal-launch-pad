@@ -9,6 +9,33 @@ import { fetchApprovedProducts } from "@/lib/products";
 import { supabase } from "@/integrations/supabase/client";
 import { SITE } from "@/lib/site";
 
+const FAQS = [
+  {
+    q: "What is ProductReveal?",
+    a: "ProductReveal is a product discovery platform where makers submit new AI tools, SaaS apps, templates, plugins and digital products, and readers browse editor-reviewed listings to find trusted new products.",
+  },
+  {
+    q: "Is it free to submit a product?",
+    a: "Yes. Submitting a product to ProductReveal is completely free — no account or credit card required. Every submission is reviewed by an editor before it goes live.",
+  },
+  {
+    q: "How long does the review process take?",
+    a: "Most submissions are reviewed within a few business days. We check that the product is real, working, and described accurately before publishing the listing.",
+  },
+  {
+    q: "Do listings include a link to my website?",
+    a: "Yes. Every approved listing includes a link to your product's official website, along with your logo, screenshots, pricing details and key features.",
+  },
+  {
+    q: "Are the product pages SEO-friendly?",
+    a: "Each product page uses clean markup, descriptive meta tags and structured data — built for discoverability, helping search engines understand your product. We don't guarantee rankings, but pages are designed to be easy to crawl and index.",
+  },
+  {
+    q: "Can I write for the ProductReveal blog?",
+    a: "Yes — we accept guest articles about product building, tools and the maker economy. Visit our Write for Us page for guidelines and how to pitch.",
+  },
+];
+
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
@@ -17,8 +44,23 @@ export const Route = createFileRoute("/")({
       { name: "description", content: SITE.description },
       { property: "og:title", content: `${SITE.name} — Discover new digital products, tools & startups` },
       { property: "og:description", content: SITE.description },
+      { property: "og:url", content: `${SITE.url}/` },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+    ],
   }),
 });
 
