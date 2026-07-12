@@ -1,4 +1,3 @@
-```tsx
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
