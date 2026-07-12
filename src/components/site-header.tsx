@@ -12,7 +12,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold tracking-tight text-foreground">
-          <img src={logoAsset.url} alt={`${SITE.name} logo`} className="h-9 w-9 rounded-full object-cover shadow-soft" />
+          <img src={logoUrl} alt={`${SITE.name} logo`} className="h-9 w-9 rounded-full object-cover shadow-soft" />
           {SITE.name}
         </Link>
         <nav className="ml-6 hidden items-center gap-1 md:flex">
