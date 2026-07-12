@@ -1,3 +1,4 @@
+```tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -5,10 +6,18 @@ export const Route = createFileRoute("/about")({
   component: About,
   head: () => ({
     meta: [
-      { title: "About — ProductReveal" },
-      { name: "description", content: "ProductReveal is an editorial product discovery platform for AI tools, SaaS apps, templates, and startup launches. Learn about our mission, editorial process, and how we stay independent." },
+      { title: "About ProductReveal" },
+      {
+        name: "description",
+        content:
+          "Learn about ProductReveal, an independent platform that helps people discover AI tools, SaaS products, marketing software, WordPress plugins, Shopify apps, and other digital solutions.",
+      },
       { property: "og:title", content: "About ProductReveal" },
-      { property: "og:description", content: "How ProductReveal reviews, ranks and publishes new products — and why makers and readers trust us." },
+      {
+        property: "og:description",
+        content:
+          "Discover ProductReveal's mission, editorial approach, and commitment to publishing useful, accurate, and transparent software content.",
+      },
     ],
     links: [{ rel: "canonical", href: "/about" }],
   }),
@@ -16,20 +25,98 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <PolicyPage eyebrow="About" title="A calmer place to discover new products" description="ProductReveal exists to help builders and readers cut through the noise of daily launches.">
-      <p>ProductReveal is an editorial product discovery platform for AI tools, SaaS apps, WordPress and Shopify products, website templates, no-code builders, and everything in between. Every day, hundreds of new digital products launch across the internet. Most disappear within a week. Some quietly become the tools that thousands of people rely on. Our job is to help you tell the difference.</p>
-      <p>We started ProductReveal because the daily launch feed had become exhausting. Founders were shipping strong products only to be buried under promotional noise, and readers were losing hours evaluating tools that turned out to be shallow or half-finished. We wanted a smaller, slower, more useful place — one where every listing is checked by a real editor and every review is written by someone who has actually tried the product.</p>
-      <h2>Who ProductReveal helps</h2>
-      <p>Our audience is people who build and buy digital tools for a living: indie founders, small SaaS teams, freelancers, community leaders, WordPress publishers, ecommerce operators and product-minded marketers. If you have ever spent a Saturday morning comparing three tools that all promise the same thing, ProductReveal is for you.</p>
-      <h2>How products are selected</h2>
-      <p>Every product that appears on ProductReveal has been submitted by a maker and reviewed by a member of our editorial team. Before publishing, we check that the product website is live, that pricing information is honest and complete, and that the description accurately reflects what the product does. When we can, we spend time inside the product — signing up, poking around, and forming a genuine opinion — before we approve a listing.</p>
-      <p>We do not auto-publish. We do not sell placement in "trending" or "editor's picks". Sponsored placements, when they exist, are always labelled clearly.</p>
-      <h2>Why you can trust the platform</h2>
-      <p>Trust is earned in the small details. Our reviews are written in plain English and include the things you actually want to know: what the product is best for, what it does not do well, and how the pricing compares to alternatives. We link out to the maker's website using standard commercial link practices, and any affiliate relationships are disclosed on our <a href="/disclaimer">disclaimer</a> page. Reader reviews and upvotes are moderated to prevent astroturfing, and we remove listings that stop working or become misleading.</p>
-      <h2>Editorial mission</h2>
-      <p>Our editorial mission is simple: help builders and buyers make faster, better decisions about the digital tools they rely on. That means being honest when a product is early. Being generous when a small maker ships something genuinely useful. And being unafraid to remove a listing when the product no longer lives up to its claims.</p>
-      <h2>Commitment to useful, original and unbiased discovery</h2>
-      <p>We write our own descriptions. We do not republish marketing copy. We prefer boring, accurate reviews over hype. When a category is crowded, we would rather link you to the two products worth trying than to twenty products competing for attention. Over time, we hope that discipline earns your trust — and helps every maker who publishes with us reach the readers who genuinely need their work.</p>
+    <PolicyPage
+      eyebrow="About"
+      title="Helping You Discover Better Software"
+      description="ProductReveal is an independent publication dedicated to helping readers discover useful software, AI tools, and digital products."
+    >
+      <p>
+        ProductReveal is an online platform focused on software discovery. We
+        publish reviews, comparisons, buying guides, tutorials, and curated
+        collections covering AI tools, SaaS applications, WordPress plugins,
+        Shopify apps, developer tools, marketing software, productivity
+        platforms, automation solutions, and other digital products.
+      </p>
+
+      <p>
+        The software industry moves quickly, with new products launching every
+        day. Finding reliable information can be challenging, especially when
+        many resources rely heavily on promotional content. ProductReveal was
+        created to provide readers with clear, informative, and practical
+        content that supports better software decisions.
+      </p>
+
+      <h2>Our Mission</h2>
+
+      <p>
+        Our mission is to help individuals and businesses discover digital tools
+        that match their needs. We aim to explain software in a straightforward
+        way by highlighting its features, intended use cases, pricing
+        information, and other important details that help readers evaluate
+        their options.
+      </p>
+
+      <h2>What We Cover</h2>
+
+      <ul>
+        <li>AI tools and AI assistants</li>
+        <li>SaaS applications</li>
+        <li>Marketing and SEO software</li>
+        <li>Developer tools and APIs</li>
+        <li>WordPress plugins and themes</li>
+        <li>Shopify apps and ecommerce solutions</li>
+        <li>No-code and automation platforms</li>
+        <li>Design and creative software</li>
+        <li>Business and productivity tools</li>
+      </ul>
+
+      <h2>Our Editorial Approach</h2>
+
+      <p>
+        We strive to create original, accurate, and easy-to-understand content.
+        Our articles are prepared using publicly available information, product
+        documentation, research, and, where appropriate, hands-on evaluation.
+        We regularly review and update content to improve accuracy and relevance
+        as products evolve.
+      </p>
+
+      <p>
+        Product listings, reviews, and recommendations are intended to provide
+        helpful information rather than guarantee that a particular product is
+        the best choice for every user. Readers are encouraged to evaluate
+        software based on their own requirements before making a purchasing
+        decision.
+      </p>
+
+      <h2>Independence & Transparency</h2>
+
+      <p>
+        Maintaining reader trust is important to us. Our editorial content is
+        created independently, and any sponsored content or affiliate
+        relationships are clearly disclosed when applicable. These relationships
+        do not determine which products we cover or how information is
+        presented.
+      </p>
+
+      <h2>Who We Serve</h2>
+
+      <p>
+        ProductReveal is designed for entrepreneurs, developers, marketers,
+        freelancers, agencies, students, ecommerce businesses, and anyone
+        looking to explore new software solutions. Whether you're searching for
+        an AI writing assistant, a marketing platform, or a productivity tool,
+        our goal is to help you make informed decisions.
+      </p>
+
+      <h2>Our Commitment</h2>
+
+      <p>
+        We are committed to publishing useful, original, and trustworthy
+        content. As technology continues to evolve, we will keep expanding our
+        library of reviews, comparisons, tutorials, and software resources to
+        help readers stay informed and discover products with confidence.
+      </p>
     </PolicyPage>
   );
 }
+```
