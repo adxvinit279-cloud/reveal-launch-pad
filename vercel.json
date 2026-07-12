@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://tyjcvprqolclnghsbjkp.supabase.co/functions/v1/sitemap"
+    }
+  ]
+}
