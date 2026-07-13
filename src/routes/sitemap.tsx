@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/page-hero";
 
@@ -40,7 +41,7 @@ export const Route = createFileRoute("/sitemap")({
       { property: "og:title", content: "Sitemap — ProductReveal" },
       { property: "og:description", content: "Every main page on ProductReveal in one place." },
     ],
-    links: [{ rel: "canonical", href: "/sitemap" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/sitemap` }],
   }),
   component: () => (
     <>

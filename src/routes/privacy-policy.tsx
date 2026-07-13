@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/privacy-policy")({
       { property: "og:title", content: "Privacy Policy — ProductReveal" },
       { property: "og:description", content: "Read how ProductReveal handles your data, cookies, and third-party services." },
     ],
-    links: [{ rel: "canonical", href: "/privacy-policy" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/privacy-policy` }],
   }),
 });
 

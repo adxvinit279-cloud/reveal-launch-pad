@@ -19,7 +19,7 @@ export const Route = createFileRoute("/contact")({
       { property: "og:title", content: "Contact ProductReveal" },
       { property: "og:description", content: "Reach the ProductReveal team for submissions, corrections, partnerships and advertising." },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/contact` }],
   }),
 });
 

@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/submit-product")({
       { property: "og:title", content: "Submit a Product — ProductReveal" },
       { property: "og:description", content: "Free product submission — reviewed by our editorial team." },
     ],
-    links: [{ rel: "canonical", href: "/submit-product" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/submit-product` }],
   }),
 });
 

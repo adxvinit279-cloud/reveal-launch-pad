@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
@@ -118,7 +119,7 @@ export const Route = createFileRoute("/disclaimer")({
           "Learn about ProductReveal's disclaimer, affiliate disclosure, editorial content, and legal information.",
       },
     ],
-    links: [{ rel: "canonical", href: "/disclaimer" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/disclaimer` }],
   }),
 });
 

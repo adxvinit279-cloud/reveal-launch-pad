@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/editorial-policy")({
           "Our editorial principles, review process, correction policy, and commitment to transparency.",
       },
     ],
-    links: [{ rel: "canonical", href: "/editorial-policy" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/editorial-policy` }],
   }),
 
   component: () => (

@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/advertise")({
           "Explore advertising and sponsorship opportunities on ProductReveal for AI tools, SaaS products, and digital services.",
       },
     ],
-    links: [{ rel: "canonical", href: "/advertise" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/advertise` }],
   }),
 
   component: () => (

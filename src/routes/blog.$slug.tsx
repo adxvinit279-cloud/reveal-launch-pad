@@ -25,10 +25,10 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
-        { property: "og:url", content: `/blog/${params.slug}` },
+        { property: "og:url", content: `${SITE.url}/blog/${params.slug}` },
         ...(img ? [{ property: "og:image" as const, content: img }, { name: "twitter:card", content: "summary_large_image" }] : []),
       ],
-      links: [{ rel: "canonical", href: `/blog/${params.slug}` }],
+      links: [{ rel: "canonical", href: `${SITE.url}/blog/${params.slug}` }],
       scripts: p
         ? [
             {
