@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/products")({
       { property: "og:title", content: "All Products — ProductReveal" },
       { property: "og:description", content: "Browse every AI tool, SaaS app, template, plugin and startup listed on ProductReveal." },
     ],
-    links: [{ rel: "canonical", href: "/products" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/products` }],
   }),
 });
 

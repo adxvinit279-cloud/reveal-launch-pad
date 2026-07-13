@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 export const Route = createFileRoute("/write-for-us")({
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/write-for-us")({
       { property: "og:title", content: "Write for ProductReveal" },
       { property: "og:description", content: "Guest post guidelines for ProductReveal contributors." },
     ],
-    links: [{ rel: "canonical", href: "/write-for-us" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/write-for-us` }],
   }),
   component: () => (
     <PolicyPage eyebrow="Contribute" title="Write for ProductReveal" description="Guest post guidelines for makers, marketers and researchers.">

@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,7 +13,7 @@ export const Route = createFileRoute("/categories")({
       { property: "og:title", content: "Categories — ProductReveal" },
       { property: "og:description", content: "Browse ProductReveal categories: AI tools, SaaS, templates, no-code and more." },
     ],
-    links: [{ rel: "canonical", href: "/categories" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/categories` }],
   }),
 });
 

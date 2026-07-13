@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/terms-and-conditions")({
       { property: "og:title", content: "Terms and Conditions — ProductReveal" },
       { property: "og:description", content: "Rules and terms for using ProductReveal." },
     ],
-    links: [{ rel: "canonical", href: "/terms-and-conditions" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/terms-and-conditions` }],
   }),
 });
 

@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,10 +23,10 @@ export const Route = createFileRoute("/category/$slug")({
         { name: "description", content: desc.slice(0, 158) },
         { property: "og:title", content: title },
         { property: "og:description", content: desc.slice(0, 158) },
-        { property: "og:url", content: `/category/${params.slug}` },
+        { property: "og:url", content: `${SITE.url}/category/${params.slug}` },
         ...(img ? [{ property: "og:image" as const, content: img }] : []),
       ],
-      links: [{ rel: "canonical", href: `/category/${params.slug}` }],
+      links: [{ rel: "canonical", href: `${SITE.url}/category/${params.slug}` }],
     };
   },
   component: CategoryDetail,

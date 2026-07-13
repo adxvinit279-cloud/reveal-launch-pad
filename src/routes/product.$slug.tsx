@@ -28,7 +28,7 @@ export const Route = createFileRoute("/product/$slug")({
       { property: "og:title", content: title },
       { property: "og:description", content: desc },
       { property: "og:type", content: "article" },
-      { property: "og:url", content: `/product/${params.slug}` },
+      { property: "og:url", content: `${SITE.url}/product/${params.slug}` },
     ];
     if (p?.featured_image) {
       meta.push(
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/product/$slug")({
     }
     return {
       meta,
-      links: [{ rel: "canonical", href: `/product/${params.slug}` }],
+      links: [{ rel: "canonical", href: `${SITE.url}/product/${params.slug}` }],
       scripts: p
         ? [
             {

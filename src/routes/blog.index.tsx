@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/blog/")({
       { property: "og:title", content: "ProductReveal Blog" },
       { property: "og:description", content: "Guides, roundups and buyer advice for makers." },
     ],
-    links: [{ rel: "canonical", href: "/blog" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/blog` }],
   }),
 });
 

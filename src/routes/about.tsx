@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { PolicyPage } from "@/components/policy-page";
 
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About ProductReveal" },
       { property: "og:description", content: "How ProductReveal reviews, ranks and publishes new products — and why makers and readers trust us." },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: `${SITE.url}/about` }],
   }),
 });
 
