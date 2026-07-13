@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /auth
 
-Sitemap: https://productreveal.online/sitemap.xml
+Sitemap: https://www.productreveal.online/sitemap.xml
