@@ -2,7 +2,7 @@
 // Public endpoint (verify_jwt = false in supabase/config.toml).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const BASE_URL = "https://www.productreveal.online";
+const BASE_URL = "https://productreveal.online";
 
 type Freq = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
 type Entry = { path: string; lastmod?: string | null; changefreq: Freq; priority: string };
