@@ -47,10 +47,17 @@ export const Route = createFileRoute("/product/$slug")({
                 "@context": "https://schema.org",
                 "@type": "Product",
                 name: p.name,
-                description: p.description,
-                brand: p.founder_name ?? SITE.name,
-                url: p.website_url,
+                description: summarizeDescription(p.description),
+                brand: { "@type": "Brand", name: p.name },
+                url: `${SITE.url}/product/${params.slug}`,
                 image: p.featured_image ?? undefined,
+                offers: {
+                  "@type": "Offer",
+                  url: `${SITE.url}/product/${params.slug}`,
+                  priceCurrency: "USD",
+                  price: p.pricing === "paid" ? undefined : "0",
+                  availability: "https://schema.org/InStock",
+                },
               }),
             },
             {
@@ -59,9 +66,9 @@ export const Route = createFileRoute("/product/$slug")({
                 "@context": "https://schema.org",
                 "@type": "BreadcrumbList",
                 itemListElement: [
-                  { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-                  { "@type": "ListItem", position: 2, name: "Products", item: "/products" },
-                  { "@type": "ListItem", position: 3, name: p.name, item: `/product/${params.slug}` },
+                  { "@type": "ListItem", position: 1, name: "Home", item: `${SITE.url}/` },
+                  { "@type": "ListItem", position: 2, name: "Products", item: `${SITE.url}/products` },
+                  { "@type": "ListItem", position: 3, name: p.name, item: `${SITE.url}/product/${params.slug}` },
                 ],
               }),
             },
@@ -69,6 +76,7 @@ export const Route = createFileRoute("/product/$slug")({
         : [],
     };
   },
+
   component: ProductDetail,
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
