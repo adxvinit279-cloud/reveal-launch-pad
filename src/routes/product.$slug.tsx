@@ -12,6 +12,33 @@ import { pricingLabel, formatDate, SITE } from "@/lib/site";
 import { ProductCard } from "@/components/product-card";
 import { toast } from "sonner";
 
+function summarizeDescription(input: string | null | undefined): string {
+  if (!input) return "";
+  // Strip HTML and collapse whitespace
+  const plain = input.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  // Dedupe consecutive repeated sentences
+  const sentences = plain.match(/[^.!?]+[.!?]+/g) ?? [plain];
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const s of sentences) {
+    const key = s.trim().toLowerCase();
+    if (key && !seen.has(key)) { seen.add(key); unique.push(s.trim()); }
+  }
+  let out = "";
+  for (const s of unique) {
+    if ((out + " " + s).trim().length > 300) break;
+    out = (out ? out + " " : "") + s;
+  }
+  if (!out) out = unique.join(" ").slice(0, 300);
+  if (out.length > 500) {
+    out = out.slice(0, 500);
+    const lastStop = Math.max(out.lastIndexOf("."), out.lastIndexOf("!"), out.lastIndexOf("?"));
+    if (lastStop > 150) out = out.slice(0, lastStop + 1);
+  }
+  return out.trim();
+}
+
+
 export const Route = createFileRoute("/product/$slug")({
   loader: async ({ params }) => {
     const product = await fetchProductBySlug(params.slug);
