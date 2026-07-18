@@ -235,7 +235,7 @@ function ProductDetail() {
       <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-3">
         <div className="space-y-10 lg:col-span-2">
           <Prose title="About this product">
-            <p className="whitespace-pre-line">{product.description}</p>
+            <div className="prose max-w-none text-foreground/90 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-5 [&_h4]:font-display [&_h4]:font-semibold [&_h4]:mt-4 [&_p]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-primary [&_a]:underline [&_img]:rounded-xl [&_img]:my-4 [&_table]:w-full [&_table]:border [&_table]:border-border [&_th]:border [&_th]:border-border [&_th]:bg-secondary [&_th]:p-2 [&_td]:border [&_td]:border-border [&_td]:p-2" dangerouslySetInnerHTML={{ __html: product.description || "" }} />
           </Prose>
           {product.key_features.length > 0 && (
             <Prose title="Key features">

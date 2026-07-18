@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadMedia } from "@/lib/upload";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { STATUS_LABEL, type ProductStatus } from "@/lib/admin";
 import { toast } from "sonner";
 
@@ -154,7 +155,7 @@ function AdminProductEditor() {
       </Card>
 
       <Card title="Full description">
-        <Textarea rows={14} value={p.description} onChange={(e) => upd("description", e.target.value)} />
+        <RichTextEditor value={p.description || ""} onChange={(html) => upd("description", html)} />
       </Card>
 
       <Card title="Key features">

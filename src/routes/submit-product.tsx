@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PageHero } from "@/components/page-hero";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadProductMedia, wordCount } from "@/lib/upload";
 import { toast } from "sonner";
@@ -203,9 +204,9 @@ function SubmitProductPage() {
           </Section>
 
           <Section title="Full description">
-            <Field label={`Product introduction * — ${wc} words`} hint="Minimum 500 words, maximum 5000 words. Write original, useful content.">
-              <Textarea rows={14} value={form.description} onChange={(e) => set("description", e.target.value)} required />
-              <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-muted">
+            <Field label={`Product introduction * — ${wc} words`} hint="Minimum 500 words, maximum 5000 words. Format with bold, italics, lists, quotes, and links. Headings are added by our editors during review.">
+              <RichTextEditor value={form.description} onChange={(html) => set("description", html)} restricted minHeight={320} />
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-muted">
                 <div className={`h-full ${wc >= 500 && wc <= 5000 ? "bg-primary" : "bg-destructive/60"}`} style={{ width: `${Math.min(100, (wc / 500) * 100)}%` }} />
               </div>
             </Field>

@@ -20,5 +20,6 @@ export async function uploadMedia(file: File, prefix = "submissions"): Promise<s
 export const uploadProductMedia = uploadMedia;
 
 export function wordCount(text: string): number {
-  return text.trim().split(/\s+/).filter(Boolean).length;
+  const plain = text.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ");
+  return plain.trim().split(/\s+/).filter(Boolean).length;
 }
