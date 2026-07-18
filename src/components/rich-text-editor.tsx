@@ -90,7 +90,7 @@ function Toolbar({ editor, onImage, onLink, restricted }: { editor: Editor; onIm
       <button type="button" className={btn(editor.isActive("blockquote"))} onClick={() => editor.chain().focus().toggleBlockquote().run()}><Quote className="h-3.5 w-3.5" /></button>
       <button type="button" className={btn(editor.isActive("link"))} onClick={onLink}><LinkIcon className="h-3.5 w-3.5" /></button>
       <button type="button" className={btn(false)} onClick={onImage}><ImageIcon className="h-3.5 w-3.5" />Image</button>
-      <button type="button" className={btn(false)} onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}><TableI className="h-3.5 w-3.5" />Table</button>
+      {!restricted && <button type="button" className={btn(false)} onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}><TableI className="h-3.5 w-3.5" />Table</button>}
       <span className="mx-1 w-px bg-border" />
       <button type="button" className={btn(false)} onClick={() => editor.chain().focus().undo().run()}><Undo className="h-3.5 w-3.5" /></button>
       <button type="button" className={btn(false)} onClick={() => editor.chain().focus().redo().run()}><Redo className="h-3.5 w-3.5" /></button>
