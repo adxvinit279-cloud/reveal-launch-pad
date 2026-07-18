@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadMedia } from "@/lib/upload";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { STATUS_LABEL, type ProductStatus } from "@/lib/admin";
 import { toast } from "sonner";
 
