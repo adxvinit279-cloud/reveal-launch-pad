@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PageHero } from "@/components/page-hero";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadProductMedia, wordCount } from "@/lib/upload";
 import { toast } from "sonner";
