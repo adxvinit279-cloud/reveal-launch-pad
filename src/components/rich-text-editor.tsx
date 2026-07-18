@@ -15,12 +15,12 @@ import {
 import { uploadMedia } from "@/lib/upload";
 import { toast } from "sonner";
 
-type Props = { value: string; onChange: (html: string) => void };
+type Props = { value: string; onChange: (html: string) => void; restricted?: boolean; minHeight?: number };
 
-export function RichTextEditor({ value, onChange }: Props) {
+export function RichTextEditor({ value, onChange, restricted = false, minHeight = 420 }: Props) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      restricted ? StarterKit.configure({ heading: false }) : StarterKit,
       Link.configure({ openOnClick: false, HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" } }),
       Image.configure({ HTMLAttributes: { class: "rounded-xl my-4 max-w-full h-auto" } }),
       Table.configure({ resizable: false }),
@@ -30,8 +30,9 @@ export function RichTextEditor({ value, onChange }: Props) {
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
+        style: `min-height:${minHeight}px`,
         class:
-          "prose max-w-none min-h-[420px] rounded-b-xl border-x border-b border-border bg-background p-4 text-foreground/90 focus:outline-none [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-5 [&_h4]:font-display [&_h4]:font-semibold [&_h4]:mt-4 [&_p]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-primary [&_a]:underline [&_table]:w-full [&_table]:border [&_table]:border-border [&_th]:border [&_th]:border-border [&_th]:bg-secondary [&_th]:p-2 [&_td]:border [&_td]:border-border [&_td]:p-2",
+          "prose max-w-none rounded-b-xl border-x border-b border-border bg-background p-4 text-foreground/90 focus:outline-none [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-5 [&_h4]:font-display [&_h4]:font-semibold [&_h4]:mt-4 [&_p]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-primary [&_a]:underline [&_table]:w-full [&_table]:border [&_table]:border-border [&_th]:border [&_th]:border-border [&_th]:bg-secondary [&_th]:p-2 [&_td]:border [&_td]:border-border [&_td]:p-2",
       },
     },
   });
