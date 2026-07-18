@@ -69,13 +69,13 @@ export function RichTextEditor({ value, onChange, restricted = false, minHeight 
 
   return (
     <div>
-      <Toolbar editor={editor} onImage={addImage} onLink={addLink} />
+      <Toolbar editor={editor} onImage={addImage} onLink={addLink} restricted={restricted} />
       <EditorContent editor={editor} />
     </div>
   );
 }
 
-function Toolbar({ editor, onImage, onLink }: { editor: Editor; onImage: () => void; onLink: () => void }) {
+function Toolbar({ editor, onImage, onLink, restricted }: { editor: Editor; onImage: () => void; onLink: () => void; restricted?: boolean }) {
   const btn = (active: boolean) =>
     `inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs font-medium transition ${active ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/80 text-foreground"}`;
   return (
