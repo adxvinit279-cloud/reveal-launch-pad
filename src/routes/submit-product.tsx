@@ -203,9 +203,9 @@ function SubmitProductPage() {
             </Field>
           </Section>
 
-          <Section title="Full description">
-            <Field label={`Product introduction * — ${wc} words`} hint="Minimum 500 words, maximum 5000 words. Format with bold, italics, lists, quotes, and links. Headings are added by our editors during review.">
-              <RichTextEditor value={form.description} onChange={(html) => set("description", html)} restricted minHeight={320} />
+          <Section title="Full review / description">
+            <Field label={`Your review * — ${wc} words`} hint="Minimum 500 words, maximum 5000 words. Use headings, lists, quotes, images, and links — write it like a blog review.">
+              <RichTextEditor value={form.description} onChange={(html) => set("description", html)} minHeight={420} />
               <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-muted">
                 <div className={`h-full ${wc >= 500 && wc <= 5000 ? "bg-primary" : "bg-destructive/60"}`} style={{ width: `${Math.min(100, (wc / 500) * 100)}%` }} />
               </div>
