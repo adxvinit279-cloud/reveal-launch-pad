@@ -155,7 +155,7 @@ function AdminProductEditor() {
       </Card>
 
       <Card title="Full description">
-        <Textarea rows={14} value={p.description} onChange={(e) => upd("description", e.target.value)} />
+        <RichTextEditor value={p.description || ""} onChange={(html) => upd("description", html)} />
       </Card>
 
       <Card title="Key features">
