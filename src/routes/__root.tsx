@@ -145,6 +145,16 @@ function RootShell({ children }: { children: ReactNode }) {
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2890006117709223"
      crossorigin="anonymous"></script>
 
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z6XFETN7JE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z6XFETN7JE');
+</script>
+
         
       </head>
       <body>
