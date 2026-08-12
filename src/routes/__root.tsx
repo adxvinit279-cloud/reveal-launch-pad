@@ -160,6 +160,12 @@ function RootShell({ children }: { children: ReactNode }) {
     `,
   }}
 />
+        <script
+  defer
+  data-website-id="dfid_jObtcEaUoTj7cxPhGPcQS"
+  data-domain="productreveal.online"
+  src="https://datafa.st/js/script.js">
+</script>
 
         
       </head>
